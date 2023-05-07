@@ -4,7 +4,7 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class User extends Migration
+class UserTable extends Migration
 {
     public function up()
     {
@@ -66,21 +66,21 @@ class User extends Migration
             'default_page_id_module'    => [
                 'type'       => 'SMALLINT',
                 'constraint' => 5,
-                'null'       => true,
+                'unsigned'       => true,
             ],
             'default_page_id_role'    => [
                 'type'       => 'SMALLINT',
                 'constraint' => 5,
-                'null'       => true,
+                'unsigned'       => true,
             ],
             'created_at datetime default current_timestamp',
             'updated_at datetime default current_timestamp',
         ]);
         $this->forge->addPrimaryKey('id_user');
-        $this->forge->addKey('default_page_id_role', false, false, 'user_role');
+        $this->forge->addForeignKey('default_page_id_module', 'module', 'id_module', 'CASCADE', 'CASCADE' , 'fkmoduleuser');
+        $this->forge->addForeignKey('default_page_id_role', 'role', 'id_role', 'CASCADE', 'CASCADE' , 'fkrole');
+        $this->forge->addKey('default_page_id_role');
         $this->forge->addKey('default_page_id_module');
-        $this->forge->addForeignKey('default_page_id_module', 'module', 'id_module', 'CASCADE', 'CASCADE', 'user_module');
-        $this->forge->addForeignKey('default_page_id_role', 'role', 'id_role', 'CASCADE', 'CASCADE', 'user_role');
         $this->forge->createTable('user');
     }
 

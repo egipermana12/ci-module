@@ -4,7 +4,7 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class Role extends Migration
+class RoleTable extends Migration
 {
     public function up()
     {
@@ -41,8 +41,8 @@ class Role extends Migration
             'updated_at datetime default current_timestamp',
         ]);
         $this->forge->addPrimaryKey('id_role');
+        $this->forge->addForeignKey('id_module', 'module', 'id_module', 'CASCADE', 'CASCADE' , 'fkmodule');
         $this->forge->addKey('id_module');
-        $this->forge->addForeignKey('id_module', 'module', 'id_module', 'CASCADE', 'CASCADE', 'role_module');
         $this->forge->createTable('role');
     }
 

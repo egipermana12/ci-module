@@ -4,7 +4,7 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class UserToken extends Migration
+class UserTokenTable extends Migration
 {
     public function up()
     {
@@ -40,8 +40,8 @@ class UserToken extends Migration
             ],
          ]);
          $this->forge->addPrimaryKey('selector');
+         $this->forge->addForeignKey('id_user', 'user', 'id_user', 'CASCADE', 'CASCADE' , 'fkuser');
          $this->forge->addKey('id_user');
-         $this->forge->addForeignKey('id_user', 'user', 'id_user', 'CASCADE', 'CASCADE', 'user_token_user');
          $this->forge->createTable('user_token');
     }
 

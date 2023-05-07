@@ -4,7 +4,7 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class UserRole extends Migration
+class UserRoleTable extends Migration
 {
     public function up()
     {
@@ -23,9 +23,9 @@ class UserRole extends Migration
             ],
         ]);
         $this->forge->addPrimaryKey(['id_user','id_role']);
+        $this->forge->addForeignKey('id_user', 'user', 'id_user', 'CASCADE', 'CASCADE' , 'fkuserrole');
         $this->forge->addKey('id_user');
         $this->forge->addKey('id_role');
-        $this->forge->addForeignKey('id_user', 'user', 'id_user', 'CASCADE', 'CASCADE', 'user_role_user');
         $this->forge->createTable('user_role');
     }
 
