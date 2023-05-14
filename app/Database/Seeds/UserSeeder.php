@@ -20,8 +20,8 @@ class UserSeeder extends Seeder
                 'avatar' => 'default.png',
                 'default_page_type' => 'id_module',
                 'default_page_url' => NULL,
-                'default_page_id_module' => 46,
-                'default_page_id_role' => NULL
+                'default_page_id_module' => 2,
+                'default_page_id_role' => 1
             ],
             [
                 'id_user' => 2,
@@ -34,8 +34,8 @@ class UserSeeder extends Seeder
                 'avatar' => 'default.png',
                 'default_page_type' => 'id_module',
                 'default_page_url' => NULL,
-                'default_page_id_module' => 5,
-                'default_page_id_role' => NULL
+                'default_page_id_module' => 3,
+                'default_page_id_role' => 1
             ]
         ];
         $this->db->table('user')->insertBatch($data);

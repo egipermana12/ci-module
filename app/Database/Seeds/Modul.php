@@ -10,7 +10,7 @@ class Modul extends Seeder
     {
         $data = [
             [
-                'id_module' => 5,
+                'id_module' => 3,
                 'nama_module' => 'build/user',
                 'judul_module' => 'User Manager',
                 'id_module_status' => 1,
@@ -18,12 +18,20 @@ class Modul extends Seeder
                 'deskripsi' => 'Pengaturan user'
             ],
             [
-                'id_module' => 46,
+                'id_module' => 2,
                 'nama_module' => 'dashboard',
                 'judul_module' => 'Dashboard',
                 'id_module_status' => 1,
                 'login' => 'Y',
                 'deskripsi' => 'PDashboard'
+            ],
+            [
+                'id_module' => 1,
+                'nama_module' => 'Login',
+                'judul_module' => 'Login',
+                'id_module_status' => 1,
+                'login' => 'R',
+                'deskripsi' => 'Login ke akun anda'
             ],
         ];
         $this->db->table('module')->insertBatch($data);

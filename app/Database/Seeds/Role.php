@@ -14,21 +14,21 @@ class Role extends Seeder
                 'nama_role' => 'admin',
                 'judul_role' => 'Administrator',
                 'keterangan' => 'Administrator',
-                'id_module' => 46
+                'id_module' => 2
             ],
             [
                 'id_role' => 2,
                 'nama_role' => 'user',
                 'judul_role' => 'User',
                 'keterangan' => 'Pengguna Umum',
-                'id_module' => 5
+                'id_module' => 3
             ],
             [
                 'id_role' => 3,
                 'nama_role' => 'webdev',
                 'judul_role' => 'Web Developer',
                 'keterangan' => 'Pengembang aplikasi',
-                'id_module' => 5
+                'id_module' => 3
             ]
         ];
         $this->db->table('role')->insertBatch($data);

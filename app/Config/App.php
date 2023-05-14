@@ -17,7 +17,25 @@ class App extends BaseConfig
      *
      *    http://example.com/
      */
-    public string $baseURL = 'http://localhost:8080/';
+    public string $baseURL = '';
+
+    public $csrf = [
+    
+        // Load csrf_helper.php
+        'enable' => false,
+        
+        // Automatic insert token into cookie
+        'auto_settoken' => true,
+        
+        // Auto compare cookie token and $_POST token and exit program when an error occured
+        'auto_check' => false,
+        
+        // Form field, misal: <input type="hidden" name="csrf_app_token" value="..."/>
+        'name' => 'csrf_app_token',
+        
+        // Cookie lifetime in seconds
+        'expire' => 7200
+    ];
 
     /**
      * Allowed Hostnames in the Site URL other than the hostname in the baseURL.
