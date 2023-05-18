@@ -97,4 +97,9 @@ class Login extends BaseController
         exit;
     }
 
+    public function coba()
+    {
+        return 'OK';
+    }
+
 }
