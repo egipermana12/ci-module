@@ -93,13 +93,8 @@ class Login extends BaseController
         }
         $this->session->destroy();
         
-        header('location: ' . $this->config->baseURL . 'login');
+        header('location: ' . $this->config->baseURL . 'login'); 
         exit;
-    }
-
-    public function coba()
-    {
-        return 'OK';
     }
 
 }

@@ -38,6 +38,7 @@ abstract class BaseController extends Controller
     protected $session;
     
     private $methodName;
+    private $controllerName;
     
     public $currentModule;
 
@@ -55,7 +56,7 @@ abstract class BaseController extends Controller
      *
      * @var array
      */
-    protected $helpers = ['csrf'];
+    protected $helpers = ['csrf', 'utils'];
 
     /**
      * Be sure to declare properties for any property fetch you initialized.
@@ -104,6 +105,17 @@ abstract class BaseController extends Controller
         } else if ($this->currentModule['login'] == 'R') {
             $this->loginRestricted();
         }
+
+        //if login
+        if ($this->isLoggedIn) 
+        {
+            $this->data['menu'] = $this->model->getMenu($this->currentModule['nama_module']);
+
+            //jika module sekarang adalah login maka redirect ke default
+            if ($nama_module == 'login') {
+                $this->redirectOnLoggedIn();
+            }
+        }
     }
 
     /**
@@ -126,28 +138,19 @@ abstract class BaseController extends Controller
         exit;
     }
 
+    protected function getControllerName() {
+        return $this->controllerName;
+    }
+    
+    protected function getMethodName() {
+        return $this->methodName;
+    }
+    
+
     /**
      * redirect user setelah login
      */
     /* Redirect User setelah login */
-    protected function mustNotLoggedIn() {
-        if ($this->isLoggedIn) {    
-            if ($this->currentModule['nama_module'] == 'login') {
-                
-                $redirect_url = '';
-                if ($this->user['default_page_type'] == 'url') {
-                    $redirect_url = str_replace('{{BASE_URL}}', $this->config->baseURL, $this->user['default_page_url']);
-                } else if ($this->user['default_page_type'] == 'id_module') {
-                    $redirect_url = $this->config->baseURL . $this->user['default_module']['nama_module'];
-                } else {
-                    $redirect_url = $this->config->baseURL . $this->user['role'][$this->user['default_page_id_role']]['nama_module'];
-                }
-                // header('Location: ' . $this->config->baseURL . $this->data['module_role']->nama_module);
-                header('Location: ' . $redirect_url);
-                exit();
-            }
-        }
-    }
 
     protected function redirectOnLoggedIn() {
         if ($this->isLoggedIn) {
@@ -167,8 +170,26 @@ abstract class BaseController extends Controller
     {
         if (!$this->isLoggedIn) {
             header('Location: ' . $this->config->baseURL . 'login');
-            // redirect()->to($this->config->baseURL . 'login');
             exit();
+        }
+    }
+    
+    protected function mustNotLoggedIn() {
+        if ($this->isLoggedIn) {    
+            if ($this->currentModule['nama_module'] == 'login') {
+                
+                $redirect_url = '';
+                if ($this->user['default_page_type'] == 'url') {
+                    $redirect_url = str_replace('{{BASE_URL}}', $this->config->baseURL, $this->user['default_page_url']);
+                } else if ($this->user['default_page_type'] == 'id_module') {
+                    $redirect_url = $this->config->baseURL . $this->user['default_module']['nama_module'];
+                } else {
+                    $redirect_url = $this->config->baseURL . $this->user['role'][$this->user['default_page_id_role']]['nama_module'];
+                }
+                // header('Location: ' . $this->config->baseURL . $this->data['module_role']->nama_module);
+                header('Location: ' . $redirect_url);
+                exit();
+            }
         }
     }
 

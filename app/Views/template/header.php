@@ -14,7 +14,7 @@ if (empty($_SESSION['user'])) {
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -25,23 +25,29 @@ if (empty($_SESSION['user'])) {
     <link rel="stylesheet" type="text/css" href="<?=$config->baseURL . 'vendors/bootstrap-icons/bootstrap-icons.css?r='.time()?>"/>
     <link rel="stylesheet" type="text/css" href="<?=$config->baseURL . 'assets/css/styles.css?r=' . time()?>">
     <link rel="stylesheet" type="text/css" href="<?=$config->baseURL . 'assets/css/dashboard.css?r=' . time()?>">
+    <!-- untuk dark theme -->
+    <link rel="stylesheet" type="text/css" href="<?=$config->baseURL . 'assets/css/theme/dark-theme.css?r=' . time()?>">
+
+    <!-- untuk sidebar -->
+    <link rel="stylesheet" type="text/css" href="<?=$config->baseURL . 'assets/css/theme/color-scheme/dark-sidebar.css?r=' . time()?>">    
+
     <?php
-        if (@$styles) {
-            foreach($styles as $file) {
-                if (is_array($file)) {
-                    $attr = '';
-                    if (key_exists('attr', $file)) {
-                        foreach($file['attr'] as $param => $val) {
-                            $attr .= $param . '="' . $val . '"';
-                        }
+    if (@$styles) {
+        foreach($styles as $file) {
+            if (is_array($file)) {
+                $attr = '';
+                if (key_exists('attr', $file)) {
+                    foreach($file['attr'] as $param => $val) {
+                        $attr .= $param . '="' . $val . '"';
                     }
-                    $file = $file['url'];
-                    echo '<link rel="stylesheet" ' . $attr . ' type="text/css" href="'.$file.'?r='.time().'"/>' . "\n";
-                } else {
-                    echo '<link rel="stylesheet" type="text/css" href="'.$file.'?r='.time().'"/>' . "\n";
                 }
+                $file = $file['url'];
+                echo '<link rel="stylesheet" ' . $attr . ' type="text/css" href="'.$file.'?r='.time().'"/>' . "\n";
+            } else {
+                echo '<link rel="stylesheet" type="text/css" href="'.$file.'?r='.time().'"/>' . "\n";
             }
         }
+    }
     ?>
 
     <script type="text/javascript" src="<?=$config->baseURL . 'vendors/jquery/jquery.min.js?r='.time()?>"></script>
@@ -49,18 +55,19 @@ if (empty($_SESSION['user'])) {
 
     <!-- Dynamic scripts -->
     <?php
-        if (@$scripts) {
-            foreach($scripts as $file) {
-                if (is_array($file)) {
-                    if ($file['print']) {
-                        echo '<script type="text/javascript">' . $file['script'] . '</script>' . "\n";
-                    }
-                } else {
-                    echo '<script type="text/javascript" src="'.$file.'?r='.time().'"></script>' . "\n";
+    if (@$scripts) {
+        foreach($scripts as $file) {
+            if (is_array($file)) {
+                if ($file['print']) {
+                    echo '<script type="text/javascript">' . $file['script'] . '</script>' . "\n";
                 }
+            } else {
+                echo '<script type="text/javascript" src="'.$file.'?r='.time().'"></script>' . "\n";
             }
         }
-        $user = $_SESSION['user'];
+    }
+        //ambil session user
+    $user = session()->get('user');
     ?>
 </head>
 <body class="">
@@ -97,14 +104,14 @@ if (empty($_SESSION['user'])) {
                         } else {
                             switch (@$_COOKIE['jwd_adm_theme']) {
                                 case 'dark':
-                                    $theme_dark = 'active';
-                                    $icon_class = 'bi bi-moon-stars';
-                                    break;
+                                $theme_dark = 'active';
+                                $icon_class = 'bi bi-moon-stars';
+                                break;
                                 case 'light':
                                 default:
-                                    $theme_light = 'active';
-                                    $icon_class = 'bi bi-sun';
-                                    break;          
+                                $theme_light = 'active';
+                                $icon_class = 'bi bi-sun';
+                                break;          
                             }
                         }
                         ?>
@@ -134,15 +141,73 @@ if (empty($_SESSION['user'])) {
                 <li>
                     <a class="icon-link" href="<?=$config->baseURL?>builtin/setting-layout"><i class="bi bi-gear"></i></a>
                 </li>
+                <li class="ps-2 nav-account">
+                    <?php 
+                    $img_url = !empty($user['avatar']) && file_exists(ROOTPATH . 'images/user/' . $user['avatar']) ?
+                    $config->baseURL . 'images/user/' . $user['avatar'] : $config->baseURL . 'images/user/default.png';
+                    $account_link = $config->baseURL . 'user';
+                    ?>
+                    <a class="profile-btn" href="<?=$account_link?>" data-bs-toggle="dropdown"><img src="<?=$img_url?>" alt="user_img"></a>
+                    <?php 
+                    if($login) { ?>
+                        <ul class="dropdown-menu">
+                            <li class="dropdown-profile px-4 pt-4 pb-2">
+                                <div class="avatar">
+                                    <a href="<?=$config->baseURL . 'builtin/user/edit?id=' . $user['id_user'];?>">
+                                        <img src="<?=$img_url?>" alt="user_img">
+                                    </a>
+                                </div>
+                                <div class="card-content mt-3">
+                                    <p><?=strtoupper($user['nama'])?></p>
+                                    <p><small>Email: <?=$user['email']?></small></p>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="dropdown-item py-2" href="<?=$config->baseURL?>builtin/user/edit-password">Change Password</a>
+                            </li>
+                            <li>
+                                <li><a class="dropdown-item py-2" href="<?=$config->baseURL?>login/logout">Logout</a></li>
+                            </li>
+                        </ul>
+                    <?php } ?>
+                </li>
             </ul>
         </div>
     </header>
 
-    <div class="container">
-        <p>hallo dari header</p>
-        <?php
+    <div class="site-content">
+        <div class="sidebar-guide">
+            <div class="arrow" style="font-size:18px">
+                <i class="fa-solid fa-angles-right"></i>
+            </div>
+        </div>
+        <div class="sidebar shadow">
+            <nav>
+                <?php foreach($menu as $val) {
+                    $kategori = $val['kategori'];
+                    if($kategori['show_title'] == 'Y')
+                    {
+                        echo '<div class="menu-kategori"> 
+                            <div class="menu-kategori-wrapper">
+                                <h6 class="title">' . $kategori['nama_kategori'] . '</h6>
+                        ';
+                        if($kategori['deskripsi'])
+                        {
+                            echo '<small class="description">' . $kategori['deskripsi'] . '</small>';
+                        }
+                        echo '</div>
+                            </div>';
+                    }
+                    $list_menu = menu_list($val['menu']);
+                    echo build_menu($currentModule, $list_menu);
+                } ?>
+            </nav>
+        </div>
+        <div class="content">
+            <?php
             $this->renderSection('content')
-        ?>
+            ?>
+        </div>
     </div>
 </body>
 </html>
