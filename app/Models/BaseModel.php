@@ -76,17 +76,33 @@ class BaseModel extends Model
         return $result;
     }
 
-    public function getSettingAplikasi()
+    public function getSettingAplikasi($where)
     {
         $builder = $this->db->table('setting');
         $builder->select('*');
-        $builder->where('type', 'app');
+        $builder->where($where);
         $query = $builder->get()->getResultArray();
         foreach($query as $val){
             $settingAplikasi[$val['param']] = $val['value'];
         }
         return $settingAplikasi;
     }
+
+    public function getSettingUser()
+    {
+        $id_user = session()->get('user')['id_user'];
+        $builder = $this->db->table('setting_user');
+        $builder->select('*');
+        $builder->where('id_user', $id_user);
+        $result = $builder->get()->getRow();
+        if(!$result)
+        {
+            $settingDef = $this->getSettingAplikasi(array('type' => 'layout'));
+            $result = new \stdClass;
+            $result->params = json_encode($settingDef);
+        }
+        return $result;
+    }    
 
     public function getSettingRegistrasi()
     {
@@ -153,7 +169,7 @@ class BaseModel extends Model
             
             $menu_kategori[$val['id_menu_kategori']][$val['id_menu']] = $val;
         }
-        
+
         $sql = 'SELECT * FROM menu_kategori WHERE aktif = "Y" ORDER BY urut';
         $query_result = $this->db->query($sql)->getResultArray();
         $result = [];

@@ -80,7 +80,7 @@ abstract class BaseController extends Controller
         $this->isLoggedIn = $this->session->get('logged_in');
         $this->data['login'] = $this->isLoggedIn;
         $this->data['config'] = $this->config;
-        $this->data['settingAplikasi'] = $this->model->getSettingAplikasi();
+        $this->data['settingAplikasi'] = $this->model->getSettingAplikasi(array('type' => 'app'));
         $this->data['settingRegistrasi'] = $this->model->getSettingRegistrasi();
         
         $this->data['scripts'] = array(
@@ -106,7 +106,18 @@ abstract class BaseController extends Controller
             $this->loginRestricted();
         }
 
-        //if login
+        //if login for layout
+        if ($this->isLoggedIn) 
+        {
+            $userSetting = $this->model->getSettingUser();
+            if ($userSetting) {
+                $this->data['app_layout'] = json_decode($userSetting->params, true);
+            }
+        }else{
+            $this->data['app_layout'] = $this->model->getSettingAplikasi(array('type' => 'layout'));
+        }
+
+        //if login for logic
         if ($this->isLoggedIn) 
         {
             $this->data['menu'] = $this->model->getMenu($this->currentModule['nama_module']);

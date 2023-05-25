@@ -33,7 +33,7 @@
 <body>
     <section class="row layout__wrapper">
         <?php
-            $this->renderSection('content')
+        $this->renderSection('content')
         ?>
     </section>
 </body>

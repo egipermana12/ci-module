@@ -14,7 +14,7 @@ if (empty($_SESSION['user'])) {
 ?>
 
 <!DOCTYPE html>
-<html lang="en" data-bs-theme="light">
+<html lang="en" data-bs-theme="<?=@$_COOKIE['jwd_adm_theme'] ?: 'light'?>">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -23,15 +23,21 @@ if (empty($_SESSION['user'])) {
     <link rel="stylesheet" type="text/css" href="<?=$config->baseURL . 'vendors/bootstrap/css/bootstrap.min.css?r=' . time()?>">
     <link rel="stylesheet" type="text/css" href="<?=$config->baseURL . 'vendors/fontawesome/css/all.css?r='.time()?>"/>
     <link rel="stylesheet" type="text/css" href="<?=$config->baseURL . 'vendors/bootstrap-icons/bootstrap-icons.css?r='.time()?>"/>
-    <link rel="stylesheet" type="text/css" href="<?=$config->baseURL . 'assets/css/styles.css?r=' . time()?>">
+    <link rel="stylesheet" type="text/css" href="<?=$config->baseURL . 'assets/css/header.css?r=' . time()?>">
     <link rel="stylesheet" type="text/css" href="<?=$config->baseURL . 'assets/css/dashboard.css?r=' . time()?>">
     <!-- untuk dark theme -->
     <link rel="stylesheet" type="text/css" href="<?=$config->baseURL . 'assets/css/theme/dark-theme.css?r=' . time()?>">
 
-    <!-- untuk sidebar -->
-    <link rel="stylesheet" type="text/css" href="<?=$config->baseURL . 'assets/css/theme/color-scheme/dark-sidebar.css?r=' . time()?>">    
+    <!-- untuk css custom dari setting -->
+    <link rel="stylesheet" type="text/css" href="<?=$config->baseURL . 'assets/css/theme/color-scheme/'.$app_layout['color_scheme'].'.css?r=' . time()?>">    
+    <link rel="stylesheet" type="text/css" href="<?=$config->baseURL . 'vendors/bootswatch/'.$app_layout['bootswatch_theme'].'/bootstrap.min.css?r=' . time()?>">   
+    <link rel="stylesheet" type="text/css" href="<?=$config->baseURL . 'assets/css/theme/color-scheme/'.$app_layout['sidebar_color'].'-sidebar.css?r=' . time()?>">    
+    <link rel="stylesheet" type="text/css" href="<?=$config->baseURL . 'assets/css/fonts/'.$app_layout['font_family'].'.css?r=' . time()?>">    
+    <link rel="stylesheet" type="text/css" href="<?=$config->baseURL . 'assets/css/fonts/font-size-'.$app_layout['font_size'].'.css?r=' . time()?>">    
+    <link rel="stylesheet" type="text/css" href="<?=$config->baseURL . 'assets/css/theme/color-scheme/'.$app_layout['logo_background_color'].'-logo-background.css?r=' . time()?>">    
 
     <?php
+
     if (@$styles) {
         foreach($styles as $file) {
             if (is_array($file)) {
@@ -51,6 +57,8 @@ if (empty($_SESSION['user'])) {
     ?>
 
     <script type="text/javascript" src="<?=$config->baseURL . 'vendors/jquery/jquery.min.js?r='.time()?>"></script>
+    <script type="text/javascript" src="<?=$config->baseURL . 'vendors/js.cookie/js.cookie.min.js'?>"></script>
+    <script type="text/javascript" src="<?=$config->baseURL . 'assets/js/header.js?r='.time()?>"></script>
     <script type="text/javascript" src="<?=$config->baseURL . 'vendors/bootstrap/js/bootstrap.bundle.min.js?r='.time()?>"></script>
 
     <!-- Dynamic scripts -->
@@ -70,7 +78,7 @@ if (empty($_SESSION['user'])) {
     $user = session()->get('user');
     ?>
 </head>
-<body class="">
+<body class="<?=@$_COOKIE['jwd_adm_mobile'] ? 'mobile-menu-show' : ''?>">
     <header class="nav-header shadow">
         <div class="nav-header-logo pull-left">
             <a class="header-logo" href="<?=$config->baseURL?>" title="Jagowebdev">
@@ -188,15 +196,15 @@ if (empty($_SESSION['user'])) {
                     if($kategori['show_title'] == 'Y')
                     {
                         echo '<div class="menu-kategori"> 
-                            <div class="menu-kategori-wrapper">
-                                <h6 class="title">' . $kategori['nama_kategori'] . '</h6>
+                        <div class="menu-kategori-wrapper">
+                        <h6 class="title">' . $kategori['nama_kategori'] . '</h6>
                         ';
                         if($kategori['deskripsi'])
                         {
                             echo '<small class="description">' . $kategori['deskripsi'] . '</small>';
                         }
                         echo '</div>
-                            </div>';
+                        </div>';
                     }
                     $list_menu = menu_list($val['menu']);
                     echo build_menu($currentModule, $list_menu);
@@ -205,7 +213,8 @@ if (empty($_SESSION['user'])) {
         </div>
         <div class="content">
             <?php
-            $this->renderSection('content')
+            $this->renderSection('content');
+            
             ?>
         </div>
     </div>

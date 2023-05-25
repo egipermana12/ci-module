@@ -27,7 +27,7 @@ class Modul extends Seeder
             ],
             [
                 'id_module' => 1,
-                'nama_module' => 'Login',
+                'nama_module' => 'login',
                 'judul_module' => 'Login',
                 'id_module_status' => 1,
                 'login' => 'R',
