@@ -40,6 +40,7 @@ class MenuTable extends Migration
             'type'       => 'SMALLINT',
             'constraint' => 5,
             'unsigned'       => true,
+            'null' => true,
         ],
         'id_parent' => [
             'type'           => 'SMALLINT',

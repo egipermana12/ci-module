@@ -213,8 +213,7 @@ if (empty($_SESSION['user'])) {
         </div>
         <div class="content">
             <?php
-            $this->renderSection('content');
-            
+            $this->renderSection('content'); 
             ?>
         </div>
     </div>
