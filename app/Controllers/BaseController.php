@@ -72,6 +72,8 @@ abstract class BaseController extends Controller
         // Do Not Edit This Line
         parent::initController($request, $response, $logger);
 
+        date_default_timezone_set('Asia/Jakarta');
+
         $this->session = \Config\Services::session();
         $this->config         = new App;
         $this->model          = new BaseModel;
@@ -83,9 +85,12 @@ abstract class BaseController extends Controller
         $this->data['settingAplikasi'] = $this->model->getSettingAplikasi(array('type' => 'app'));
         $this->data['settingRegistrasi'] = $this->model->getSettingRegistrasi();
         
-        $this->data['scripts'] = array(
-            $this->config->baseURL . 'assets/js/app.js'
-        );
+
+        // $this->data['scripts'] = array();
+        // $this->data['styles'] = array();
+
+        // $this->data['scripts'] = array($this->config->baseURL . 'assets/js/app.js');
+        
 
         $web = $this->session->get('web');
         $nama_module = $web['nama_module'];
@@ -148,14 +153,6 @@ abstract class BaseController extends Controller
         echo view('app_error.php', $data);
         exit;
     }
-
-    protected function getControllerName() {
-        return $this->controllerName;
-    }
-    
-    protected function getMethodName() {
-        return $this->methodName;
-    }
     
 
     /**
@@ -188,7 +185,7 @@ abstract class BaseController extends Controller
     protected function mustNotLoggedIn() {
         if ($this->isLoggedIn) {    
             if ($this->currentModule['nama_module'] == 'login') {
-                
+
                 $redirect_url = '';
                 if ($this->user['default_page_type'] == 'url') {
                     $redirect_url = str_replace('{{BASE_URL}}', $this->config->baseURL, $this->user['default_page_url']);

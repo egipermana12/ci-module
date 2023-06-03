@@ -23,7 +23,6 @@ if (empty($_SESSION['user'])) {
     <link rel="stylesheet" type="text/css" href="<?=$config->baseURL . 'vendors/bootstrap/css/bootstrap.min.css?r=' . time()?>">
     <link rel="stylesheet" type="text/css" href="<?=$config->baseURL . 'vendors/fontawesome/css/all.css?r='.time()?>"/>
     <link rel="stylesheet" type="text/css" href="<?=$config->baseURL . 'vendors/bootstrap-icons/bootstrap-icons.css?r='.time()?>"/>
-    <link rel="stylesheet" type="text/css" href="<?=$config->baseURL . 'assets/css/header.css?r=' . time()?>">
     <link rel="stylesheet" type="text/css" href="<?=$config->baseURL . 'assets/css/dashboard.css?r=' . time()?>">
     <!-- untuk dark theme -->
     <link rel="stylesheet" type="text/css" href="<?=$config->baseURL . 'assets/css/theme/dark-theme.css?r=' . time()?>">
@@ -31,13 +30,11 @@ if (empty($_SESSION['user'])) {
     <!-- untuk css custom dari setting -->
     <link rel="stylesheet" type="text/css" href="<?=$config->baseURL . 'assets/css/theme/color-scheme/'.$app_layout['color_scheme'].'.css?r=' . time()?>">    
     <link rel="stylesheet" type="text/css" href="<?=$config->baseURL . 'vendors/bootswatch/'.$app_layout['bootswatch_theme'].'/bootstrap.min.css?r=' . time()?>">   
-    <link rel="stylesheet" type="text/css" href="<?=$config->baseURL . 'assets/css/theme/color-scheme/'.$app_layout['sidebar_color'].'-sidebar.css?r=' . time()?>">    
-    <link rel="stylesheet" type="text/css" href="<?=$config->baseURL . 'assets/css/fonts/'.$app_layout['font_family'].'.css?r=' . time()?>">    
-    <link rel="stylesheet" type="text/css" href="<?=$config->baseURL . 'assets/css/fonts/font-size-'.$app_layout['font_size'].'.css?r=' . time()?>">    
+    <link rel="stylesheet" type="text/css" href="<?=$config->baseURL . 'assets/css/theme/color-scheme/'.$app_layout['sidebar_color'].'-sidebar.css?r=' . time()?>">      
     <link rel="stylesheet" type="text/css" href="<?=$config->baseURL . 'assets/css/theme/color-scheme/'.$app_layout['logo_background_color'].'-logo-background.css?r=' . time()?>">    
 
+    <!-- Dynamic style -->
     <?php
-
     if (@$styles) {
         foreach($styles as $file) {
             if (is_array($file)) {
@@ -212,9 +209,11 @@ if (empty($_SESSION['user'])) {
             </nav>
         </div>
         <div class="content">
-            <?php
-            $this->renderSection('content'); 
-            ?>
+            <div class="content-wrapper">
+                <?php
+                $this->renderSection('content'); 
+                ?>
+            </div>
         </div>
     </div>
 </body>

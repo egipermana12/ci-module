@@ -35,11 +35,11 @@ class BaseModel extends Model
         
         $user['role'] = [];
         $query = $this->db->query('SELECT * FROM user_role 
-                                LEFT JOIN role USING(id_role) 
-                                LEFT JOIN module USING(id_module) 
-                                WHERE id_user = ? 
-                                ORDER BY  nama_role', [$id_user]
-                            );
+            LEFT JOIN role USING(id_role) 
+            LEFT JOIN module USING(id_module) 
+            WHERE id_user = ? 
+            ORDER BY  nama_role', [$id_user]
+        );
 
         $result = $query->getResultArray();
         if ($result) {
@@ -47,7 +47,7 @@ class BaseModel extends Model
                 $user['role'][$val['id_role']] = $val;
             }
         }
-                
+
         $query = $this->db->query('SELECT * FROM module WHERE id_module = ?', [$user['default_page_id_module']]);
         $user['default_module'] = $query->getRowArray();
         
@@ -135,11 +135,11 @@ class BaseModel extends Model
     {
         $where_role = $_SESSION['user']['role'] ? join(',', array_keys($_SESSION['user']['role'])) : 'null';
         $sql = 'SELECT * FROM menu 
-                    LEFT JOIN menu_role USING (id_menu) 
-                    LEFT JOIN module USING (id_module)
-                    LEFT JOIN menu_kategori USING(id_menu_kategori)
-                WHERE menu_kategori.aktif = "Y" AND id_role IN ( ' . $where_role . ')
-                ORDER BY menu_kategori.urut, menu.urut';
+        LEFT JOIN menu_role USING (id_menu) 
+        LEFT JOIN module USING (id_module)
+        LEFT JOIN menu_kategori USING(id_menu_kategori)
+        WHERE menu_kategori.aktif = "Y" AND id_role IN ( ' . $where_role . ')
+        ORDER BY menu_kategori.urut, menu.urut';
 
         $query_result = $this->db->query($sql)->getResultArray();
 
@@ -152,7 +152,7 @@ class BaseModel extends Model
             $menu[$val['id_menu']]['depth'] = 0;
 
             if ($current_module == $val['nama_module']) {
-                
+
                 $current_id = $val['id_menu'];
                 $menu[$val['id_menu']]['highlight'] = 1;
             }

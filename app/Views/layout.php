@@ -19,6 +19,7 @@
 
     <script type="text/javascript" src="<?=$config->baseURL . 'vendors/jquery/jquery.min.js?r='.time()?>"></script>
     <script type="text/javascript" src="<?=$config->baseURL . 'vendors/bootstrap/js/bootstrap.min.js?r='.time()?>"></script>
+    <script type="text/javascript" src="<?=$config->baseURL . 'assets/js/app.js?r='.time()?>"></script>
 
     <?php
 

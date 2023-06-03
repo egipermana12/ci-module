@@ -5,9 +5,10 @@
 * Website   : https://jagowebdev.com
 */
 
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,700&display=swap');
+
 body {
-    font-family: "open sans", "segoe ui", "open sans", arial;
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Roboto', sans-serif;
     font-weight: 400;
     font-size: 14px;
     /* background: #f7f9fb; */
@@ -907,4 +908,8 @@ table ol li {
 /*-- Menu Manager*/
 .apexcharts-svg {
     background: none !important;
+}
+
+.cursor-pointer {
+    cursor:pointer;
 }

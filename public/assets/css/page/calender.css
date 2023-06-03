@@ -1,0 +1,27 @@
+.site-content {
+    background-color: white !important;
+}
+
+table .calendar {
+}
+
+td.calender-day {
+    cursor: pointer;
+}
+
+.calender-day:hover {
+    color: red;
+    background-color: black !important;
+}
+
+.sab,
+.min {
+    color: #dc3545;
+}
+
+.label-color {
+    display: block;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+}
