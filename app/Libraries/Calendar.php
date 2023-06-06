@@ -56,9 +56,9 @@ class Calendar
             for($column = 1; $column <=3; $column++)
             {
                 //untuk kegiatan dibawah kalender perbulan
-                $listKegiatan = '';
+                $listKegiatan = [];
 
-                $html []= '<div class="d-flex flex-column py-1 px-2">';
+                $html []= '<div class="d-flex flex-column py-1 px-4">';
 
                 $this->bulan_loop++;
 
@@ -93,10 +93,21 @@ class Calendar
 
             $cekBln = $this->tahun_aktif.'-'.sprintf("%02d",$this->bulan_loop);
             foreach($kegiatan as $val){
-                $valBln = date('Y-m', strtotime($val['tgl_mulai_kegiatan']));
-                $valTgl = date('m-d', strtotime($val['tgl_mulai_kegiatan']));
-                if($valBln == $cekBln){
-                    $listKegiatan .= $valTgl .' '. $val['nm_kegiatan'] .'</br>';
+                $valYearBln = date('Y-m', strtotime($val['tgl_mulai_kegiatan']));
+                
+                $valStartTgl = date('d', strtotime($val['tgl_mulai_kegiatan']));
+                $valEndTgl = date('d', strtotime($val['tgl_selesai_kegiatan']));
+                if($valStartTgl == $valEndTgl) {
+                    $valTgl = $valStartTgl;
+                }else{
+                    $valTgl = $valStartTgl . ' - '. $valEndTgl;
+                }
+
+                $valBln = intval(date('m', strtotime($val['tgl_mulai_kegiatan'])));
+                $blnTrim = substr($bulan[$valBln - 1], 0, 3);
+
+                if($valYearBln == $cekBln){
+                    $listKegiatan []= '<p class="fw-medium text-capitalize" style="color:'.$val['warna'].';">'.$valTgl .' '. $blnTrim .' : '. $val['nm_kegiatan'] .'</p>';
                 }
             }           
 
@@ -121,7 +132,7 @@ class Calendar
 
                 //cek jika hari,bulan, tahun ada di db dan sama dg tgl hari ini
                 foreach($kegiatan as $val){
-                    if($cekTgl == $val['tgl_mulai_kegiatan']){
+                    if($cekTgl >= $val['tgl_mulai_kegiatan'] && $cekTgl <= $val['tgl_selesai_kegiatan']){
                         $class .= ' text-white';
                         $style = 'background: '.$val['warna'];
                     }
@@ -135,7 +146,7 @@ class Calendar
                 }
             }
             $html[] = '</tr>';
-            $html[] = '</table><p class="text-gray fw-medium text-capitalize">'.$listKegiatan.'</p></div>';
+            $html[] = '</table>'.implode('', $listKegiatan).'</div>';
 
         }
         $html[] = '</div>';

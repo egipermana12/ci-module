@@ -44,7 +44,7 @@ class KalenderKerjaModel extends Model
     public function generateTglWarna($tahun)
     {
         $builder = $this->db->table('kalender_kerja');
-        $builder->select('kalender_kerja.tgl_mulai_kegiatan,kalender_kerja.nm_kegiatan, kalender_label.warna');
+        $builder->select('kalender_kerja.tgl_mulai_kegiatan, kalender_kerja.tgl_selesai_kegiatan,kalender_kerja.nm_kegiatan, kalender_label.warna');
         $builder->join('kalender_label', 'kalender_kerja.id_kalender_label=kalender_label.id');
         $builder->where('year(tgl_mulai_kegiatan)', $tahun);
         $builder->orderBy('tgl_mulai_kegiatan', 'ASC');

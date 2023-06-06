@@ -1,5 +1,11 @@
-.site-content {
-    background-color: white !important;
+/**/
+
+.card-header {
+    background-color: white;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 table .calendar {
@@ -10,8 +16,8 @@ td.calender-day {
 }
 
 .calender-day:hover {
-    color: red;
-    background-color: black !important;
+    color: #71717a;
+    background-color: #cbd5e1 !important;
 }
 
 .sab,
@@ -21,7 +27,7 @@ td.calender-day {
 
 .label-color {
     display: block;
-    width: 20px;
-    height: 20px;
+    width: 15px;
+    height: 15px;
     border-radius: 50%;
 }
