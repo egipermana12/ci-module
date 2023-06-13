@@ -131,3 +131,20 @@ function set_depth(&$result, $depth = 0)
         }
     }
 }
+
+function breadcrumb($data)
+{
+    $separator = '&gt;';
+    echo '<nav style="--bs-breadcrumb-divider: '.$separator.';" aria-label="breadcrumb" >
+            <ol class="breadcrumb shadow-sm">';
+        foreach($data as $title => $url)
+        {
+            if($url)
+            {
+                echo '<li class="breadcrumb-item"><a href="'.$url.'">'.$title.'</a></li>';
+            }else{
+                echo '<li class="breadcrumb-item active" aria-current="page">'.$title.'</li>';
+            }
+        }
+        echo '</ol></nav>';
+}

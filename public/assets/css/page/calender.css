@@ -27,7 +27,7 @@ td.calender-day {
 
 .label-color {
     display: block;
-    width: 15px;
-    height: 15px;
-    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    border-radius: 4px;
 }

@@ -1,0 +1,69 @@
+.card-header {
+    background-color: white;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.dataTables_filter input {
+    width: 300px !important;
+    margin-bottom: 10px;
+}
+
+div.dt-buttons {
+    margin-bottom: 10px;
+    position: relative;
+    float: left;
+}
+
+.cs-text {
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.btn-export {
+    background: #6993ff !important;
+    border: none !important;
+}
+
+.pagination-outer {
+    text-align: center;
+}
+.pagination {
+    font-family: "Poppins", sans-serif;
+    display: inline-flex;
+    position: relative;
+}
+
+.pagination li a.page-link {
+    color: #5d5e67;
+    background: none;
+    border: none;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 5px;
+    margin: 0 5px;
+}
+
+.pagination li:first-child a.page-link,
+.pagination li:last-child a.page-link {
+    background: #e9ecef;
+}
+
+.pagination li a.page-link:hover,
+.pagination li a.page-link:focus,
+.pagination li.active a.page-link:hover,
+.pagination li.active a.page-link {
+    background: #6993ff;
+    color: #fff;
+}
+
+.pagination > li > a,
+.pagination > li > span {
+    border: 1px solid #6993ff;
+}
+.pagination > li.active > a {
+    background: #6993ff;
+    color: #fff;
+}

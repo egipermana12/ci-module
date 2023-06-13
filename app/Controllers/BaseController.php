@@ -9,7 +9,7 @@ use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 use Config\App;
 use Psr\Log\LoggerInterface;
-use App\Models\BaseModel;
+use App\Models\MybaseModel;
 use App\Libraries\Auth;
 
 
@@ -39,6 +39,8 @@ abstract class BaseController extends Controller
     
     private $methodName;
     private $controllerName;
+
+    protected $moduleURL;
     
     public $currentModule;
 
@@ -56,7 +58,7 @@ abstract class BaseController extends Controller
      *
      * @var array
      */
-    protected $helpers = ['csrf', 'utils'];
+    protected $helpers = ['csrf', 'utils', 'form'];
 
     /**
      * Be sure to declare properties for any property fetch you initialized.
@@ -74,25 +76,18 @@ abstract class BaseController extends Controller
 
         date_default_timezone_set('Asia/Jakarta');
 
-        $this->session = \Config\Services::session();
         $this->config         = new App;
-        $this->model          = new BaseModel;
+        $this->model          = new MybaseModel;
         $this->auth           = new Auth;
 
-        $this->isLoggedIn = $this->session->get('logged_in');
+        $this->isLoggedIn = session()->get('logged_in');
         $this->data['login'] = $this->isLoggedIn;
         $this->data['config'] = $this->config;
         $this->data['settingAplikasi'] = $this->model->getSettingAplikasi(array('type' => 'app'));
         $this->data['settingRegistrasi'] = $this->model->getSettingRegistrasi();
         
 
-        // $this->data['scripts'] = array();
-        // $this->data['styles'] = array();
-
-        // $this->data['scripts'] = array($this->config->baseURL . 'assets/js/app.js');
-        
-
-        $web = $this->session->get('web');
+        $web = session()->get('web');
         $nama_module = $web['nama_module'];
         $module = $this->model->getModule($nama_module);
         if (!$module) {
@@ -102,7 +97,11 @@ abstract class BaseController extends Controller
         $this->currentModule = $module;
         $this->data['currentModule'] = $this->currentModule;
 
-        $this->user = $this->session->get('user');
+        //persiapan breadcrumb
+        $this->moduleURL = $web['module_url'];
+        $this->data['module_url'] = $this->moduleURL;
+
+        $this->user = session()->get('user');
 
         // Login? Yes, No, Restrict
         if ($this->currentModule['login'] == 'Y' && $nama_module != 'login') {
@@ -126,6 +125,9 @@ abstract class BaseController extends Controller
         if ($this->isLoggedIn) 
         {
             $this->data['menu'] = $this->model->getMenu($this->currentModule['nama_module']);
+
+            //untuk breadcrumb
+            $this->data['breadcrumb'] = ['Home' => $this->config->baseURL, $this->currentModule['judul_module'] => $this->moduleURL];
 
             //jika module sekarang adalah login maka redirect ke default
             if ($nama_module == 'login') {

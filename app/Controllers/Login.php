@@ -20,6 +20,9 @@ class Login extends BaseController
         $this->data['status'] = '';
         if ($postPassword) {
             $this->login();
+            if (session()->get('logged_in')) {
+                return redirect()->to($this->config->baseURL);
+            }
         }
         
         csrf_settoken();   
@@ -27,16 +30,16 @@ class Login extends BaseController
         return view('Login', $this->data);
     }
 
-    private function login()
+    public function login()
     {
         $username = $this->request->getPost('username');
         $password = $this->request->getPost('password');
         $remember = $this->request->getPost('remember');
 
-        // Check Token
+        // // Check Token
         $validation_message = csrf_validation();
 
-        // Cek CSRF token
+        // // Cek CSRF token
         if ($validation_message) {
             $this->data['status'] = 'error';
             $this->data['message'] = $validation_message['message'];
@@ -80,18 +83,18 @@ class Login extends BaseController
             $this->mLogin->setUserToken($user);
         }
 
-        $this->session->set('user', $user);
-        $this->session->set('logged_in', true);
+        session()->set('user', $user);
+        session()->set('logged_in', true);
         // $this->mLogin->recordLogin($user); belum terlalu penting
     }
 
     public function logout() 
     {
-        $user = $this->session->get('user');
+        $user = session()->get('user');
         if ($user) {
-            $this->mLogin->deleteAuthCookie($this->session->get('user')['id_user']);
+            $this->mLogin->deleteAuthCookie(session()->get('user')['id_user']);
         }
-        $this->session->destroy();
+        session()->destroy();
         
         header('location: ' . $this->config->baseURL . 'login'); 
         exit;

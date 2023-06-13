@@ -27,11 +27,19 @@ if (empty($_SESSION['user'])) {
     <!-- untuk dark theme -->
     <link rel="stylesheet" type="text/css" href="<?=$config->baseURL . 'assets/css/theme/dark-theme.css?r=' . time()?>">
 
+    <meta name="<?= csrf_token() ?>" content="<?= csrf_hash() ?>" class="csrf">
+
     <!-- untuk css custom dari setting -->
     <link rel="stylesheet" type="text/css" href="<?=$config->baseURL . 'assets/css/theme/color-scheme/'.$app_layout['color_scheme'].'.css?r=' . time()?>">    
     <link rel="stylesheet" type="text/css" href="<?=$config->baseURL . 'vendors/bootswatch/'.$app_layout['bootswatch_theme'].'/bootstrap.min.css?r=' . time()?>">   
     <link rel="stylesheet" type="text/css" href="<?=$config->baseURL . 'assets/css/theme/color-scheme/'.$app_layout['sidebar_color'].'-sidebar.css?r=' . time()?>">      
     <link rel="stylesheet" type="text/css" href="<?=$config->baseURL . 'assets/css/theme/color-scheme/'.$app_layout['logo_background_color'].'-logo-background.css?r=' . time()?>">    
+
+
+    <!-- sweetalert -->
+    <script type="text/javascript" src="<?=$config->baseURL . 'vendors/sweetalert2/sweetalert2.all.min.js' ?>"></script>
+    <link rel="stylesheet" type="text/css" href="<?=$config->baseURL . 'vendors/sweetalert2/sweetalert2.min.css' ?>"/>
+
 
     <!-- Dynamic style -->
     <?php
@@ -76,6 +84,9 @@ if (empty($_SESSION['user'])) {
     ?>
 </head>
 <body class="<?=@$_COOKIE['jwd_adm_mobile'] ? 'mobile-menu-show' : ''?>">
+
+    <div id='TukLoading'></div>
+    
     <header class="nav-header shadow">
         <div class="nav-header-logo pull-left">
             <a class="header-logo" href="<?=$config->baseURL?>" title="Jagowebdev">
@@ -209,6 +220,7 @@ if (empty($_SESSION['user'])) {
             </nav>
         </div>
         <div class="content">
+            <!-- <?=!empty($breadcrumb) ? breadcrumb($breadcrumb) : ''?> -->
             <div class="content-wrapper">
                 <?php
                 $this->renderSection('content'); 

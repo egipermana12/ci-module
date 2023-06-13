@@ -402,6 +402,14 @@ header .nav-account .dropdown-menu.show {
     right: -260px;
 }
 
+#staticBackdrop .modal-dialog {
+    -webkit-transform: translate(0,-50%);
+    -o-transform: translate(0,-50%);
+    transform: translate(0,-50%);
+    top: 50%;
+    margin: 0 auto;
+}
+
 #mobile-menu-btn {
     display: block;
     color: #dde1e6;
@@ -912,4 +920,8 @@ table ol li {
 
 .cursor-pointer {
     cursor:pointer;
+}
+
+.modal-backdrop {
+    z-index: 900 !important;
 }

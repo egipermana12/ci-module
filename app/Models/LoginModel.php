@@ -2,11 +2,11 @@
 
 namespace App\Models;
 
-use App\Models\BaseModel;
+use App\Models\MybaseModel;
 use App\Libraries\Auth;
 
 
-class LoginModel extends BaseModel
+class LoginModel extends MyBaseModel
 {
     public function recordLogin($user)
     {

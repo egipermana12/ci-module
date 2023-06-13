@@ -47,7 +47,7 @@ class Calendar
         );
         $html = [];
         $html[] = '<div class="d-flex flex-column justify-content-center align-items-center">';
-        $html[] = '<h1 class="fs-2 text-danger fw-bold"> '.$this->tahun_aktif.'</h1>';
+        // $html[] = '<h1 class="fs-2 text-danger fw-bold"> '.$this->tahun_aktif.'</h1>';
         
         //table of month
         for($row = 1; $row <= 4; $row++) //banyak bulan kebawah
@@ -75,7 +75,7 @@ class Calendar
 
               $html[] = '<table class="calendar my-2">';
               $classMontActive = $this->bulan_loop == $this->bulan_aktif ? 'text-danger fw-bold fs-6' : 'text-black fw-semibold fs-6';
-              $html[] = '<tr><td colspan="7" class="'.$classMontActive.' text-uppercase text-center mb-2 border-bottom" style="height: 20px;">'.$bulan[$this->bulan_loop - 1].'</td></tr>';
+              $html[] = '<tr><td colspan="7" class="'.$classMontActive.' text-uppercase text-center mb-2 border-bottom" style="height: 20px;">'.$bulan[$this->bulan_loop - 1].' '. $this->tahun_aktif .'</td></tr>';
               $html[] = '<tr class="nama_hari" style="height: 44px;">
               <td class="p-2 text-center fw-semibold">Sen</td>
               <td class="p-2 text-center fw-semibold">Sel</td>

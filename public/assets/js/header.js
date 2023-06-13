@@ -92,3 +92,29 @@ jQuery(document).ready(function () {
         return false;
     });
 });
+
+function Load_Loading() {
+    $("#TukLoading").html(
+        '<div class="position-fixed t-0 l-0 w-100 h-100 d-flex justify-content-center align-items-center" style="z-index: 1060; background: rgba(0,0,0,0.4);" > <div class="spinner-border text-danger" role="status"> <span class="sr-only">Loading...</span> </div> </div>'
+    );
+}
+
+function Clear_Loading() {
+    $("#TukLoading").html("");
+}
+
+function Peringatan(val) {
+    Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: val,
+    });
+}
+
+function Berhasil(val) {
+    Swal.fire({
+        icon: "success",
+        title: "Berhasil",
+        text: val,
+    });
+}

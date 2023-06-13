@@ -21,6 +21,7 @@
             //echo password_hash('admin', PASSWORD_DEFAULT);
         ?>
         <form method="post" action="">
+            <?= csrf_field(); ?>
             <div class="input-group mb-3">
               <span class="input-group-text" id="basic-addon1">
                   <i class="fa fa-user"></i>
@@ -45,7 +46,6 @@
 
         <div class="mt-3 mb-2">
          <button type="submit" class="form-control btn <?=$settingAplikasi['btn_login']?>">Submit</button>
-         <?= csrf_formfield() ?>
      </div>
  </form>
 

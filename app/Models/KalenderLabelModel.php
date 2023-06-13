@@ -12,9 +12,9 @@ class KalenderLabelModel extends Model
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
-    protected $protectFields    = true;
+    protected $protectFields    = false;
     protected $allowedFields    = [
-        'id', 'nm_label', 'warna'
+        'nm_label', 'warna'
     ];
 
     // Dates
@@ -40,4 +40,5 @@ class KalenderLabelModel extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
+    
 }
