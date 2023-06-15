@@ -67,3 +67,7 @@ div.dt-buttons {
     background: #6993ff;
     color: #fff;
 }
+
+div.dataTables_wrapper div.dataTables_info {
+    padding-top: 0 !important;
+}

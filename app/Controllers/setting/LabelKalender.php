@@ -47,6 +47,26 @@ class LabelKalender extends BaseController
         }
     }
 
+    public function edit($id)
+    {
+        if ($this->request->isAJAX())
+        {
+            $find = $this->models->find($id);
+            $data = [
+                'judul' => 'Ubah Data Label',
+                'nm_label' => $find['nm_label'],
+                'warna' => $find['warna'],
+                'id' => $id
+            ];
+            return $this->response->setJSON([
+                'err' => false,
+                'data' => view('setting/kalenderlabel/form', $data)
+            ]); 
+        }else{
+            exit('maaf tidak dapat diproses');
+        }
+    }
+
     public function fetchData()
     {
         if ($this->request->isAJAX()){
@@ -73,6 +93,7 @@ class LabelKalender extends BaseController
    public function create()
    {
      if ($this->request->isAJAX()){
+        $id = $this->request->getPost('id');
         $data = [
             'nm_label' => $this->request->getPost('nm_label'),
             'warna' => $this->request->getPost('warna'),
@@ -95,15 +116,23 @@ class LabelKalender extends BaseController
         if(!$this->validate($rules, $messages)){
             return $this->response->setJSON([
                 'err' => true,
-                'messages' => $this->validation->getErrors(),
-                'data' => $data
+                'messages' => $this->validation->getErrors()
             ]);
         }else{
-            $simpan = $this->models->save($data);
-            return $this->response->setJSON([
-                'err' => false,
-                'messages' => $simpan
-            ]);
+            if(empty($id))
+            {
+                $simpan = $this->models->save($data);
+                return $this->response->setJSON([
+                    'err' => false,
+                    'messages' => $simpan
+                ]);
+            }else{
+                $update = $this->models->update($id, $data);
+                return $this->response->setJSON([
+                    'err' => false,
+                    'messages' => $update
+                ]);
+            }
         }
     }else{
             exit('akses ditolak');

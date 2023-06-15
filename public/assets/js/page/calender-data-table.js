@@ -139,7 +139,6 @@ jQuery(document).ready(function () {
             data: { [csrfName]: csrfHash },
             success: function (res) {
                 Clear_Loading();
-                // console.log(res.data);
                 $(".tampilModal").html(res.data);
                 $("#staticBackdrop").modal("show");
                 $("#staticBackdrop").appendTo("body");
@@ -158,7 +157,21 @@ function load() {
 }
 
 function edit(id) {
-    alert("Hello");
+    Load_Loading();
+    $.ajax({
+        type: "POST",
+        url: "LabelKalender/edit/" + id,
+        data: { [csrfName]: csrfHash },
+        success: function (res) {
+            Clear_Loading();
+            $(".tampilModal").html(res.data);
+            $("#staticBackdrop").modal("show");
+            $("#staticBackdrop").appendTo("body");
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            alert(xhr.status + "\n" + xhr.responseText + "\n" + thrownError);
+        },
+    });
 }
 
 function hapus(id) {

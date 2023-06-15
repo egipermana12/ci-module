@@ -663,9 +663,7 @@ table img {
     max-width: 64px;
 }
 
-div.dataTables_wrapper div.dataTables_processing {
-    background: #feffc6;
-}
+
 div.dataTables_wrapper { 
     margin: 0 auto;
 }
@@ -675,26 +673,7 @@ table ol li {
 .dt-row {
     overflow: auto;
 }
-.dataTables_processing > div {
-    display: none;
-}
-.dataTables_processing {
-    width: 60px !important;
-    height: 60px !important;
-    border-radius: 15px;
-    background: #fffcb6 !important;
-    /* margin: auto; */
-    border: 0 !important;
-    top: calc(50% - 30px);
-    left: calc(50% - 30px);
-}
-.dataTables_processing>span {
-    display: flex !important;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center !important;
-    height: 100%;
-}
+
 /*-- Data Tables */
 
 .badge-role {

@@ -19,7 +19,7 @@
         
     </div>
     <div class="modal-footer">
-        <input type="hidden" value="<?= $id; ?>">
+        <input type="hidden" name="id" value="<?= $id; ?>">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
         <button type="submit" id="btn-simpan" class="btn btn-primary">Simpan</button>
     </div>

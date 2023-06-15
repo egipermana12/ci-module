@@ -7,7 +7,7 @@
         </div> 
         <div class="py-1">
             <a href="<?=$config->baseURL?>setting/labelkalender" class="btn btn-outline-success btn-sm"><i class="fas fa-plus pe-1"></i> Add Label</a>
-            <a href="<?=$config->baseURL?>setting/kalender/addkegiatan" class="btn btn-outline-primary btn-sm"><i class="fas fa-plus pe-1"></i> Add Kegiatan</a>
+            <a href="<?=$config->baseURL?>setting/kegiatan" class="btn btn-outline-primary btn-sm"><i class="fas fa-plus pe-1"></i> Add Kegiatan</a>
         </div> 
     </div>
     <div class="card-body">    

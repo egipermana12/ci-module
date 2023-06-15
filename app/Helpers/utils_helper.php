@@ -53,8 +53,8 @@ function build_menu( $current_module, $arr_menu, $submenu = false)
             $new = $val['new'] == 1 ? '<span class="menu-baru">NEW</span>' : '';
         }
         $arrow = key_exists('children', $val) ? '<span class="pull-right-container">
-                                <i class="fa fa-angle-left arrow"></i>
-                            </span>' : '';
+        <i class="fa fa-angle-left arrow"></i>
+        </span>' : '';
         $has_child = key_exists('children', $val) ? 'has-children' : '';
 
         if ($has_child) {
@@ -103,13 +103,13 @@ function build_menu( $current_module, $arr_menu, $submenu = false)
         }
 
         $menu .= '<li'. $class_li . '>
-                    <a '.$class_a.' href="'. $url . '"'.$onClick.'>'.
-                        '<span class="menu-item">' .
-                            $menu_icon.
-                            '<span class="text">' . $val['nama_menu'] . '</span>' .
-                        '</span>' . 
-                        $arrow.
-                    '</a>'.$new;
+        <a '.$class_a.' href="'. $url . '"'.$onClick.'>'.
+        '<span class="menu-item">' .
+        $menu_icon.
+        '<span class="text">' . $val['nama_menu'] . '</span>' .
+        '</span>' . 
+        $arrow.
+        '</a>'.$new;
         
         if (key_exists('children', $val))
         {   
@@ -136,15 +136,47 @@ function breadcrumb($data)
 {
     $separator = '&gt;';
     echo '<nav style="--bs-breadcrumb-divider: '.$separator.';" aria-label="breadcrumb" >
-            <ol class="breadcrumb shadow-sm">';
-        foreach($data as $title => $url)
+    <ol class="breadcrumb shadow-sm">';
+    foreach($data as $title => $url)
+    {
+        if($url)
         {
-            if($url)
-            {
-                echo '<li class="breadcrumb-item"><a href="'.$url.'">'.$title.'</a></li>';
-            }else{
-                echo '<li class="breadcrumb-item active" aria-current="page">'.$title.'</li>';
-            }
+            echo '<li class="breadcrumb-item"><a href="'.$url.'">'.$title.'</a></li>';
+        }else{
+            echo '<li class="breadcrumb-item active" aria-current="page">'.$title.'</li>';
         }
-        echo '</ol></nav>';
+    }
+    echo '</ol></nav>';
+}
+
+function tglindo($tgl, $cetak_hari = false)
+{
+    $hari = array ( 1 =>    'Senin',
+        'Selasa',
+        'Rabu',
+        'Kamis',
+        'Jumat',
+        'Sabtu',
+        'Minggu'
+    );
+    $bulan = array (1 =>   'Jan',
+        'Feb',
+        'Mar',
+        'Apr',
+        'Mei',
+        'Jun',
+        'Jul',
+        'Agu',
+        'Sep',
+        'Okt',
+        'Nov',
+        'Des'
+    );
+    $split    = explode('-', $tgl);
+    $tgl_indo = $split[2] . ' ' . $bulan[ (int)$split[1] ] . ' ' . $split[0];
+    if ($cetak_hari) {
+        $num = date('N', strtotime($tgl));
+        return $hari[$num] . ', ' . $tgl_indo;
+    }
+    return $tgl_indo;
 }
