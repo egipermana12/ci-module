@@ -1,3 +1,9 @@
+var csrfName = $("meta.csrf").attr("name"); //CSRF TOKEN NAME
+var csrfHash = $("meta.csrf").attr("content"); //CSRF HASH
+$.ajaxPrefilter(function (options, originalOptions, jqXHR) {
+    jqXHR.setRequestHeader("X-CSRF-Token", csrfHash);
+});
+
 $(document).ready(function () {
     var csrfName = $("meta.csrf").attr("name"); //CSRF TOKEN NAME
     var csrfHash = $("meta.csrf").attr("content"); //CSRF HASH
@@ -43,7 +49,85 @@ $(document).ready(function () {
         table.ajax.reload();
     });
     // loadSelectOptions("LabelKalender/getSelectOption", ".select-container"); sementara tidak di pakai, error pada saat load awal pindah ke index
+
+    $("#btn-baru").click(function (e) {
+        e.preventDefault(e);
+        Load_Loading();
+        $.ajax({
+            type: "POST",
+            url: "Kegiatan/new",
+            data: { [csrfName]: csrfHash },
+            success: function (res) {
+                Clear_Loading();
+                $(".tampilModal").html(res.data);
+                $("#staticBackdrop").modal("show");
+                $("#staticBackdrop").appendTo("body");
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert(
+                    xhr.status + "\n" + xhr.responseText + "\n" + thrownError
+                );
+            },
+        });
+    });
 });
+
+function load() {
+    table.ajax.reload();
+}
+
+function edit(id) {
+    Load_Loading();
+    $.ajax({
+        type: "POST",
+        url: "Kegiatan/edit/" + id,
+        data: { [csrfName]: csrfHash },
+        success: function (res) {
+            Clear_Loading();
+            $(".tampilModal").html(res.data);
+            $("#staticBackdrop").modal("show");
+            $("#staticBackdrop").appendTo("body");
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            alert(xhr.status + "\n" + xhr.responseText + "\n" + thrownError);
+        },
+    });
+}
+
+function hapus(id) {
+    Swal.fire({
+        title: "Hapus Data Kegiatan?",
+        text: "Yakin hapus data kegiatan dengan ID : " + id,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Ya, hapus data!",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            Load_Loading();
+            $.ajax({
+                type: "POST",
+                url: "Kegiatan/delete",
+                data: { [csrfName]: csrfHash, id: id },
+                success: function (res) {
+                    load();
+                    Clear_Loading();
+                    Berhasil(res.messages);
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert(
+                        xhr.status +
+                            "\n" +
+                            xhr.responseText +
+                            "\n" +
+                            thrownError
+                    );
+                },
+            });
+        }
+    });
+}
 
 function loadSelectOptions(url, selectContainer) {
     $.ajax({

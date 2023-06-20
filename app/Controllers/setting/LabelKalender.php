@@ -119,7 +119,7 @@ class LabelKalender extends BaseController
                 'messages' => $this->validation->getErrors()
             ]);
         }else{
-            if(empty($id))
+            if($id === '')
             {
                 $simpan = $this->models->save($data);
                 return $this->response->setJSON([

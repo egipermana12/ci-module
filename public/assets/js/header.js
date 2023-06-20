@@ -6,6 +6,12 @@
 
 const cookie_jwd_adm_theme = Cookies.get("jwd_adm_theme");
 
+var csrfName = $("meta.csrf").attr("name"); //CSRF TOKEN NAME
+var csrfHash = $("meta.csrf").attr("content"); //CSRF HASH
+$.ajaxPrefilter(function (options, originalOptions, jqXHR) {
+    jqXHR.setRequestHeader("X-CSRF-Token", csrfHash);
+});
+
 jQuery(document).ready(function () {
     /**
      * untuk sidebar jika mempunyai child
@@ -116,5 +122,40 @@ function Berhasil(val) {
         icon: "success",
         title: "Berhasil",
         text: val,
+    });
+}
+
+function confirmDelete(id, title, text, confirmText, url) {
+    Swal.fire({
+        title: title,
+        text: text + id,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: confirmText,
+    }).then((result) => {
+        if (result.isConfirmed) {
+            Load_Loading();
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: { [csrfName]: csrfHash, id: id },
+                success: function (res) {
+                    load();
+                    Clear_Loading();
+                    Berhasil(res.messages);
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert(
+                        xhr.status +
+                            "\n" +
+                            xhr.responseText +
+                            "\n" +
+                            thrownError
+                    );
+                },
+            });
+        }
     });
 }

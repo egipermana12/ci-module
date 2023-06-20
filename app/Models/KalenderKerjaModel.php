@@ -14,7 +14,7 @@ class KalenderKerjaModel extends Model
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
     protected $allowedFields    = [
-        'id_kalender_label', 'tgl_mulai_kegiatan', 'tg_selesai_kegiatan', 'nm_kegiatan'
+        'id_kalender_label', 'tgl_mulai_kegiatan', 'tgl_selesai_kegiatan', 'nm_kegiatan'
     ];
 
     // Dates
