@@ -52,13 +52,13 @@ class Calendar
         //table of month
         for($row = 1; $row <= 4; $row++) //banyak bulan kebawah
         {
-            $html[] = '<div class="d-flex">';
+            $html[] = '<div class="d-flex gap-3 mb-4">';
             for($column = 1; $column <=3; $column++)
             {
                 //untuk kegiatan dibawah kalender perbulan
                 $listKegiatan = [];
 
-                $html []= '<div class="d-flex flex-column py-1 px-4">';
+                $html []= '<div class="d-flex flex-column py-1 px-3 card">';
 
                 $this->bulan_loop++;
 
@@ -107,16 +107,16 @@ class Calendar
                 $blnTrim = substr($bulan[$valBln - 1], 0, 3);
 
                 if($valYearBln == $cekBln){
-                    $listKegiatan []= '<p class="fw-medium text-capitalize" style="color:'.$val['warna'].';">'.$valTgl .' '. $blnTrim .' : '. $val['nm_kegiatan'] .'</p>';
+                    $listKegiatan []= '<p class="fs-7 text-capitalize" style="color:'.$val['warna'].';">'.$valTgl .' '. $blnTrim .' : '. $val['nm_kegiatan'] .'</p>';
                 }
             }           
 
             for($day = 1; $day <= $month_days; $day++){
                 $hari = ($day+$first_day_in_month - 1)%7;
                 $style = '';
-                $class = (($day==$this->tgl_aktif) && ($this->bulan_loop == $this->bulan_aktif)) ? 'bg-success text-white  rounded-circle' : '';
-                $class .= ($hari == 6) ? ' sab' : '';
-                $class .= ($hari == 0) ? ' min' : '';
+                $class = (($day==$this->tgl_aktif) && ($this->bulan_loop == $this->bulan_aktif)) ? 'bg-secondary text-white  rounded' : '';
+                $class .= ($hari == 6) ? ' sab ' : '';
+                $class .= ($hari == 0) ? ' min ' : '';
                 if(strlen($this->bulan_loop) == 1){
                     $cekBulan = '0'.$this->bulan_loop;
                 }else{
@@ -132,8 +132,16 @@ class Calendar
 
                 //cek jika hari,bulan, tahun ada di db dan sama dg tgl hari ini
                 foreach($kegiatan as $val){
-                    if($cekTgl >= $val['tgl_mulai_kegiatan'] && $cekTgl <= $val['tgl_selesai_kegiatan']){
-                        $class .= ' text-white';
+                    if($cekTgl > $val['tgl_mulai_kegiatan'] && $cekTgl < $val['tgl_selesai_kegiatan']){
+                        $class .= 'text-white ';
+                        $style = 'opacity: 40%; background: '.$val['warna'];
+                    }
+                    if($cekTgl == $val['tgl_mulai_kegiatan']){
+                        $class .='rounded-start text-white ';
+                        $style = 'background: '.$val['warna'];
+                    }
+                    if($cekTgl == $val['tgl_selesai_kegiatan']){
+                        $class .='rounded-end text-white ';
                         $style = 'background: '.$val['warna'];
                     }
                 }

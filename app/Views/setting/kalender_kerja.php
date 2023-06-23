@@ -12,11 +12,13 @@
     </div>
     <div class="card-body">    
     <!-- untuk list label kalender -->
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 justify-content-start g-2 mx-3 mb-5">
+        <div class="row mb-3">
             <?php foreach($labelKalender as $val) : ?>
-                <div class="col d-flex align-items-center">
-                    <span class="label-color" style="background: <?= $val['warna'] ?> "></span>
-                    <p class="text-body-secondary text-capitalize fw-normal px-2"><?= $val['nm_label'] ?></p>
+                <div class="col-lg-3 col-sm-6 col-xs-12 px-1 py-2 text-bg-light">
+                    <div class="d-flex align-items-center">
+                        <span class="label-color" style="background: <?= $val['warna'] ?> "></span>
+                        <p class="text-body-secondary text-capitalize fw-normal px-2"><?= $val['nm_label'] ?></p>
+                    </div>
                 </div>
             <?php endforeach; ?>
         </div>    

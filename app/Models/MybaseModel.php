@@ -94,7 +94,7 @@ class MybaseModel extends Model
 
     public function getModule($nama_module) {
         $builder = $this->db->table('module');
-        $builder->select('module.*');
+        $builder->select('module.*, module_status.*');
         $builder->join('module_status', 'module.id_module_status=module_status.id_module_status');
         $builder->where('nama_module', $nama_module);
         $result = $builder->get()->getRowArray();
@@ -219,4 +219,18 @@ class MybaseModel extends Model
         // echo '<pre>'; print_r($result); die;
         return $result;
     }
+
+    public function getModulePermission($id_module, $id_user)
+    {
+        $permission = $this->db->table('user_role_module');
+        $permission->select('user_role_module.*, module.*');
+        $permission->join('module', 'module.id_module = user_role_module.id_module');
+        $permission->join('user', 'user.id_user = user_role_module.id_user');
+        $permission->where('user_role_module.id_module', $id_module);
+        $permission->where('user_role_module.id_user', $id_user);
+        $queryResult = $permission->get()->getResultArray();
+        return $queryResult;
+    }
+
+//batas    
 }

@@ -44,6 +44,8 @@ abstract class BaseController extends Controller
     
     public $currentModule;
 
+    protected $modulePermission;
+
     /**
      * Instance of the main Request object.
      *
@@ -85,7 +87,6 @@ abstract class BaseController extends Controller
         $this->data['config'] = $this->config;
         $this->data['settingAplikasi'] = $this->model->getSettingAplikasi(array('type' => 'app'));
         $this->data['settingRegistrasi'] = $this->model->getSettingRegistrasi();
-        
 
         $web = session()->get('web');
         $nama_module = $web['nama_module'];
@@ -129,12 +130,17 @@ abstract class BaseController extends Controller
             //untuk breadcrumb
             $this->data['breadcrumb'] = ['Home' => $this->config->baseURL, $this->currentModule['judul_module'] => $this->moduleURL];
 
+            //untuk cek role dan permission
+            $this->getModulePermission();
+
+
             //jika module sekarang adalah login maka redirect ke default
             if ($nama_module == 'login') {
                 $this->redirectOnLoggedIn();
             }
-        }
+        }        
     }
+
 
     /**
      * fungsi untuk custom style dan js yang di inject dari controller
@@ -151,9 +157,21 @@ abstract class BaseController extends Controller
         }
     }
 
+
     protected function exitError($data) {
         echo view('app_error.php', $data);
         exit;
+    }
+
+    protected function printError($messages)
+    {
+        $this->data['title'] = 'Error ...';
+        if(is_string($messages))
+        {
+            $messages = $messages;
+        }
+        $this->data['msg'] = $messages;
+        return view('maintenance', $this->data);
     }
     
 
@@ -183,6 +201,7 @@ abstract class BaseController extends Controller
             exit();
         }
     }
+
     
     protected function mustNotLoggedIn() {
         if ($this->isLoggedIn) {    
@@ -203,4 +222,21 @@ abstract class BaseController extends Controller
         }
     }
 
+    /**
+     * untuk role permison
+     */
+    
+    private function getModulePermission()
+    {
+        $query = $this->model->getModulePermission($this->currentModule['id_module'], $this->user['id_user']);
+        $this->modulePermission = [];
+        if(count($query) == 0){
+            $this->modulePermission = array('status' => 'disable');
+        }
+        foreach ($query as $val) {
+            $this->modulePermission = $val;
+        }
+    }
+
+//batas
 }

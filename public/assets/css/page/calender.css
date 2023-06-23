@@ -31,3 +31,8 @@ td.calender-day {
     height: 16px;
     border-radius: 4px;
 }
+
+.fs-7 {
+    font-size: 13px;
+    font-weight: 500;
+}
