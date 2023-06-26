@@ -214,7 +214,7 @@ if (empty($_SESSION['user'])) {
                         ';
                         if($kategori['deskripsi'])
                         {
-                            echo '<small class="description">' . $kategori['deskripsi'] . '</small>';
+                            // echo '<small class="description">' . $kategori['deskripsi'] . '</small>';
                         }
                         echo '</div>
                         </div>';
@@ -233,5 +233,18 @@ if (empty($_SESSION['user'])) {
             </div>
         </div>
     </div>
+    <?php
+    if (@$scriptsbwh) {
+        foreach($scriptsbwh as $file) {
+            if (is_array($file)) {
+                if ($file['print']) {
+                    echo '<script type="text/javascript">' . $file['script'] . '</script>' . "\n";
+                }
+            } else {
+                echo '<script type="text/javascript" src="'.$file.'"></script>' . "\n";
+            }
+        }
+    }
+    ?>
 </body>
 </html>

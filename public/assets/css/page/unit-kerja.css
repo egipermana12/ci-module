@@ -1,0 +1,12 @@
+.card-header {
+    background-color: white;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+input.cb-custom {
+    width: 20px;
+    height: 20px;
+}

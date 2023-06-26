@@ -578,17 +578,17 @@ header .nav-account .dropdown-menu.show {
     margin-top: 10px;
 }
 .sidebar .menu-kategori-wrapper {
-    border-bottom: 1px solid;
-    padding-bottom: 10px;
+/*    border-bottom: 1px solid;*/
+    padding-bottom: 5px;
 }
 }   
 .menu-kategori-wrapper>.title {
     text-transform: uppercase;
-    font-size: 110%;
+    font-size: 14px;
 }
 .sidebar .menu-kategori .title {
     text-transform: uppercase;
-    font-size: 110%;
+    font-size: 14px;
 }
 
 .mobile-menu-show .sidebar {
@@ -829,7 +829,7 @@ table ol li {
 
 @media (min-width: 576px) {
     .modal-dialog {
-        max-width: 570px;
+/*        max-width: 570px;*/
         margin: 1.75rem auto;
     }
 }
@@ -903,4 +903,53 @@ table ol li {
 
 .modal-backdrop {
     z-index: 900 !important;
+}
+
+.pagination-outer {
+    text-align: center;
+}
+.pagination {
+    font-family: "Poppins", sans-serif;
+    display: inline-flex;
+    position: relative;
+}
+
+.pagination li a.page-link {
+    color: #5d5e67;
+    background: none;
+    border: none;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 5px;
+    margin: 0 5px;
+}
+
+.pagination li:first-child a.page-link,
+.pagination li:last-child a.page-link {
+    background: #e9ecef;
+}
+
+.pagination li a.page-link:hover,
+.pagination li a.page-link:focus,
+.pagination li.active a.page-link:hover,
+.pagination li.active a.page-link {
+    background: #6993ff;
+    color: #fff;
+}
+
+.pagination > li > a,
+.pagination > li > span {
+    border: 1px solid #6993ff;
+}
+.pagination > li.active > a {
+    background: #6993ff;
+    color: #fff;
+}
+
+div.dataTables_wrapper div.dataTables_info {
+    padding-top: 0 !important;
+}
+
+#map {
+    height: 500px;
 }

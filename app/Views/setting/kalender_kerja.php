@@ -14,7 +14,7 @@
     <!-- untuk list label kalender -->
         <div class="row mb-3">
             <?php foreach($labelKalender as $val) : ?>
-                <div class="col-lg-3 col-sm-6 col-xs-12 px-1 py-2 text-bg-light">
+                <div class="col-lg-3 col-sm-6 col-xs-12 px-1 py-2">
                     <div class="d-flex align-items-center">
                         <span class="label-color" style="background: <?= $val['warna'] ?> "></span>
                         <p class="text-body-secondary text-capitalize fw-normal px-2"><?= $val['nm_label'] ?></p>

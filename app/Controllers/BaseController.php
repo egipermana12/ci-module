@@ -157,6 +157,14 @@ abstract class BaseController extends Controller
         }
     }
 
+    protected function addJsBawah($file, $print = false) {
+        if ($print) {
+            $this->data['scriptsbwh'][] = ['print' => true, 'script' => $file];
+        } else {
+            $this->data['scriptsbwh'][] = $file;
+        }
+    }
+
 
     protected function exitError($data) {
         echo view('app_error.php', $data);

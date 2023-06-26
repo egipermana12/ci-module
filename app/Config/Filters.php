@@ -3,6 +3,7 @@
 namespace Config;
 
 use App\Filters\AuthMiddleware;
+use App\Filters\CSRFTimeout;
 use CodeIgniter\Config\BaseConfig;
 use CodeIgniter\Filters\CSRF;
 use CodeIgniter\Filters\DebugToolbar;
@@ -22,7 +23,8 @@ class Filters extends BaseConfig
         'honeypot'      => Honeypot::class,
         'invalidchars'  => InvalidChars::class,
         'secureheaders' => SecureHeaders::class,
-        'authMiddleware' => AuthMiddleware::class
+        'authMiddleware' => AuthMiddleware::class,
+        'csrfTimeout' => CSRFTimeout::class
     ];
 
     /**
@@ -34,6 +36,7 @@ class Filters extends BaseConfig
             // 'honeypot',
             'csrf',
             'authMiddleware',
+            'csrfTimeout',
             // 'invalidchars',
         ],
         'after' => [

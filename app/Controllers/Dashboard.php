@@ -7,6 +7,8 @@ class Dashboard extends BaseController
     public function __construct()
     { 
         $this->data['site_title'] = 'Dashboard';
+        $this->addStyle(base_url() .'vendors/leaflet/leaflet.css');
+        $this->addJs(base_url() .'vendors/leaflet/leaflet.js');
     }
 
     public function index()
