@@ -18,14 +18,6 @@ class Dashboard extends BaseController
 
     public function index()
     {
-        $moduleStatus = $this->currentModule['id_module_status'];
-        if ($moduleStatus != 1) {
-            return $this->printError('Module ' . $this->currentModule['judul_module'] . ' sedang ' . strtolower($this->currentModule['nama_status']));
-        }
-        $currentStatus = $this->modulePermission['status'];
-        if($currentStatus === 'disable'){
-            return $this->printError('anda tidak mempunyai hak akses membuka modul ' . $this->currentModule['judul_module']);   
-        }
         $geoJson = FCPATH . 'geojson/prov.geojson'; // Mendapatkan jalur fisik dari file
         $file = file_get_contents(realpath($geoJson)); // Membaca isi file
         $file = json_decode($file);
@@ -49,7 +41,7 @@ class Dashboard extends BaseController
             $this->data['markers'] = $coordinates;
         }
 
-
-        return view('Dashboard', $this->data);
+        return $this->getView('Dashboard', $this->data);
+    
     }
 }

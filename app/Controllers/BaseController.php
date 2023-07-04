@@ -60,7 +60,7 @@ abstract class BaseController extends Controller
      *
      * @var array
      */
-    protected $helpers = ['csrf', 'utils', 'form'];
+    protected $helpers = ['csrf', 'utils', 'form', 'inputRupiah'];
 
     /**
      * Be sure to declare properties for any property fetch you initialized.
@@ -244,6 +244,18 @@ abstract class BaseController extends Controller
         foreach ($query as $val) {
             $this->modulePermission = $val;
         }
+    }
+
+    protected function getView($view, $data = [])
+    {
+        if ($this->currentModule['id_module_status'] != 1) {
+            return $this->printError('Module ' . $this->currentModule['judul_module'] . ' sedang ' . strtolower($this->currentModule['nama_status']));
+        }
+        $currentStatus = $this->modulePermission['status'];
+        if($currentStatus === 'disable'){
+            return $this->printError('anda tidak mempunyai hak akses membuka modul ' . $this->currentModule['judul_module']);   
+        }
+        return view($view, $data);
     }
 
 //batas

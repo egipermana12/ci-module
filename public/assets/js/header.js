@@ -125,6 +125,52 @@ function Berhasil(val) {
     });
 }
 
+/**
+ *untuk format currency
+ * */
+function formatCurrency(num) {
+    num = num.toString().replace(/\$|\,/g, "");
+    if (isNaN(num)) num = "0";
+    sign = num == (num = Math.abs(num));
+    num = Math.floor(num * 100 + 0.50000000001);
+    cents = num % 100;
+    num = Math.floor(num / 100).toString();
+    if (cents < 10) cents = "0" + cents;
+    for (var i = 0; i < Math.floor((num.length - (1 + i)) / 3); i++)
+        num =
+            num.substring(0, num.length - (4 * i + 3)) +
+            "." +
+            num.substring(num.length - (4 * i + 3));
+    return (sign ? "" : "-") + "" + num + "," + cents;
+}
+
+/**
+ *handle input harga
+ * */
+function inputCurrency(name) {
+    var angka = document.getElementById(name + "_Uang").value;
+    var res = angka.split(",");
+    var harga = res[0].replace(/\./g, "");
+    harga_new = parseInt(harga);
+    belakangkoma1 = res[1] != undefined ? "," + res[1] : "";
+    belakangkoma2 = res[1] != undefined ? "." + res[1] : "";
+    hrg_tmpl = formatCurrency(harga_new);
+    hrg_tmpl = hrg_tmpl.split(",");
+    $("#" + name + "_Uang").val(hrg_tmpl[0] + "" + belakangkoma1);
+    $("#" + name).val(harga + "" + belakangkoma2);
+}
+
+/**
+ *cek apakah input number
+ * */
+function isNumberKey(evt) {
+    var charCode = evt.which ? evt.which : evt.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57) && charCode != 44) {
+        return false;
+    }
+    return true;
+}
+
 function confirmDelete(id, title, text, confirmText, url) {
     Swal.fire({
         title: title,
