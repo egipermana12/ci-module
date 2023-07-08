@@ -109,6 +109,16 @@ function Clear_Loading() {
     $("#TukLoading").html("");
 }
 
+function Load_Section() {
+    $("#loadingSegment").html(
+        '<div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div><p class="text-primary">Loading ...</p>'
+    );
+}
+
+function Clear_Section() {
+    $("#loadingSegment").html("");
+}
+
 function Peringatan(val) {
     Swal.fire({
         icon: "error",

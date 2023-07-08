@@ -1,0 +1,106 @@
+.card-header {
+    background-color: white;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+input.cb-custom {
+    width: 20px;
+    height: 20px;
+}
+
+.dataTables_filter input {
+    width: 300px !important;
+    margin-bottom: 10px;
+}
+
+.wrapper-upload {
+    border-radius: 0.475rem;
+    border: 4px solid #fff;
+}
+
+.image-wrapper {
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 175px;
+    height: 175px;
+    border-radius: 0.475rem;
+}
+
+.wrapper-upload .wrapper-profile {
+    position: absolute;
+    top: 0;
+    right: 0;
+    cursor: pointer;
+    background: #fff;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: translate(50%, -50%);
+    border-radius: 25px;
+}
+.wrapper-upload .wrapper-profile i {
+    color: #a6a6a6;
+    font-size: 14px;
+    transform: translateX(70%);
+}
+.wrapper-upload .wrapper-profile:hover i {
+    color: #de21ca;
+}
+.wrapper-profile input[type="file"] {
+    transform: scale(0);
+    opacity: 0;
+}
+.form-text {
+    font-size: 12px;
+    margin-top: 0.5rem;
+    color: #bbbcc1;
+}
+
+.label-radio {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    position: relative;
+}
+
+.card-input {
+    background-color: #fff;
+    border-radius: 6px;
+    border: 1px dashed #e2e8f0;
+    padding: 15px 40px;
+    cursor: pointer;
+}
+.card-input:hover {
+    cursor: pointer;
+    background-color: #eff6ff;
+    border: 1px dashed #3b82f6;
+}
+
+.card-input-element {
+    position: absolute;
+    left: 16px;
+}
+
+.fs {
+    font-size: 14px;
+}
+.label-radio input[type="radio"]:checked + .card-input {
+    background-color: #eff6ff;
+    border: 1px dashed #3b82f6;
+}
+
+.modal-body::-webkit-scrollbar {
+    width: 8px;
+}
+
+.modal-body::-webkit-scrollbar-thumb {
+    background: #a6a6a6;
+    border-radius: 4px;
+}
