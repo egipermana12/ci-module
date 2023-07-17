@@ -64,7 +64,7 @@ if (empty($_SESSION['user'])) {
     <script type="text/javascript" src="<?=$config->baseURL . 'vendors/jquery/jquery.min.js?r='?>"></script>
     <script type="text/javascript" src="<?=$config->baseURL . 'vendors/js.cookie/js.cookie.min.js'?>"></script>
     <script type="text/javascript" src="<?=$config->baseURL . 'assets/js/header.js?r='?>"></script>
-    <script type="text/javascript" src="<?=$config->baseURL . 'vendors/bootstrap/js/bootstrap.bundle.min.js?r='?>"></script>
+    <script type="text/javascript" src="<?=$config->baseURL . 'vendors/bootstrap/js/bootstrap.bundle.min.js'?>"></script>
 
     <!-- daterange -->
     <script type="text/javascript" src="<?=$config->baseURL . 'vendors/daterangepicker/moment.min.js' ?>"></script>

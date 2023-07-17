@@ -28,7 +28,24 @@ input.cb-custom {
     height: 175px;
     border-radius: 0.475rem;
 }
-
+.wrapper-upload .wrapper-remove-preview {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    cursor: pointer;
+    background: #fff;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: translate(50%, 50%);
+    border-radius: 25px;
+}
+.wrapper-upload .wrapper-remove-preview i {
+    color: #b2b2b2;
+    font-size: 20px;
+}
 .wrapper-upload .wrapper-profile {
     position: absolute;
     top: 0;

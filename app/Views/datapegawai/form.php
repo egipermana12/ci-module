@@ -7,7 +7,7 @@
     </div>
     <?= form_open('Pegawai/create', ['id' => 'form']) ?>
     <?= csrf_field(); ?>
-    <div class="modal-body" style="height: 600px; overflow-y: auto;">
+    <div class="modal-body" style="height: 500px; overflow-y: auto;">
         <div class="container">
             <div class="row mt-3 justify-content-center">
                 <div class="col-4 offset-1">
@@ -16,6 +16,9 @@
                         <label for="fotoInput" class="wrapper-profile shadow">
                           <i class="fas fa-solid fa-pen" class="upload-icon" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Tooltip on top"></i>
                           <input type="file" name="avatar" id="fotoInput" accept=".png, .jpg, .jpeg">
+                        </label>
+                        <label class="wrapper-remove-preview shadow" id="remove-preview">
+                            <i class="fas fa-regular fa-xmark" class="remove-icon" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Tooltip on top"></i>
                         </label>
                     </div>
                     <div class="form-text">Allowed file types:  png, jpg, jpeg.</div>
@@ -52,7 +55,7 @@
                         </div>
                     </div>
                     <div class="mb-3">
-                        <label for="unitKerja" class="form-label fw-medium fs-6 text-light-emphasis">Unit Kerja <span class="text-danger">*</span></label>
+                        <label for="unitKerja" class="form-label fw-medium fs-6 text-light-emphasis">Unit Kerja<span class="text-danger">*</span></label>
                         <select class="form-select" aria-label="Default select example">
                           <option selected>Open this select menu</option>
                           <option value="1">One</option>
@@ -61,7 +64,7 @@
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label for="unitKerja" class="form-label fw-medium fs-6 text-light-emphasis">Unit Kerja <span class="text-danger">*</span></label>
+                        <label for="unitKerja" class="form-label fw-medium fs-6 text-light-emphasis">Divisi Kerja<span class="text-danger">*</span></label>
                         <select class="form-select" aria-label="Default select example">
                           <option selected>Open this select menu</option>
                           <option value="1">One</option>
@@ -70,7 +73,11 @@
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label for="unitKerja" class="form-label fw-medium fs-6 text-light-emphasis">Unit Kerja <span class="text-danger">*</span></label>
+                      <label for="alamat" class="form-label fw-medium fs-6 text-light-emphasis">Alamat <span class="text-danger">*</span></label>
+                      <textarea class="form-control form-control-lg"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="unitKerja" class="form-label fw-medium fs-6 text-light-emphasis">Pilih Provinsi<span class="text-danger">*</span></label>
                         <select class="form-select" aria-label="Default select example">
                           <option selected>Open this select menu</option>
                           <option value="1">One</option>
@@ -79,7 +86,7 @@
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label for="unitKerja" class="form-label fw-medium fs-6 text-light-emphasis">Unit Kerja <span class="text-danger">*</span></label>
+                        <label for="unitKerja" class="form-label fw-medium fs-6 text-light-emphasis">Pilih Kabupaten Kota<span class="text-danger">*</span></label>
                         <select class="form-select" aria-label="Default select example">
                           <option selected>Open this select menu</option>
                           <option value="1">One</option>
@@ -88,7 +95,7 @@
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label for="unitKerja" class="form-label fw-medium fs-6 text-light-emphasis">Unit Kerja <span class="text-danger">*</span></label>
+                        <label for="unitKerja" class="form-label fw-medium fs-6 text-light-emphasis">Pilih Kecamatan<span class="text-danger">*</span></label>
                         <select class="form-select" aria-label="Default select example">
                           <option selected>Open this select menu</option>
                           <option value="1">One</option>
@@ -97,7 +104,7 @@
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label for="unitKerja" class="form-label fw-medium fs-6 text-light-emphasis">Unit Kerja <span class="text-danger">*</span></label>
+                        <label for="unitKerja" class="form-label fw-medium fs-6 text-light-emphasis">Pilih Keluarahan<span class="text-danger">*</span></label>
                         <select class="form-select" aria-label="Default select example">
                           <option selected>Open this select menu</option>
                           <option value="1">One</option>
@@ -159,20 +166,44 @@
 
     $('#staticBackdrop').on('hidden.bs.modal', function () {
         $('.modal').remove();
-    });    
+    });  
 
-    $('#fotoInput').change(function(e){
-      var reader = new FileReader();
-          reader.onload = function() {
-            var preview = document.getElementById("previewFoto");
-            preview.src = reader.result;
-          }
-          reader.readAsDataURL(event.target.files[0]);
+    /**
+     * start upload image previw
+     */
+    var imgDefault = '<?= base_url("images/pegawai/default.svg"); ?>';
+
+    $('#remove-preview').hide(); 
+
+    function previewImage(file)
+    {
+        let reader = new FileReader();
+        reader.onload = function(e) {
+            $('#previewFoto').attr('src', e.target.result);
+        }
+        reader.readAsDataURL(file);
+    }
+
+    $('#fotoInput').change(function(){
+        const file = this.files[0];
+        if(file){
+            previewImage(file);
+            $('#remove-preview').show(); 
+        }else{
+            $('#previewFoto').attr('src', imgDefault);
+            $('#remove-preview').hide();
+        }
     });
 
-    const tombol = $('.upload-icon');
-    tombol.click(function(){
-      document.getElementById("fotoInput").click();
+    $('#remove-preview').click(function(){
+        $('#previewFoto').attr('src', imgDefault);
+        $('#remove-preview').hide();
+        // Reset input file
+        $('#fotoInput').val('');
+    });
+
+    $('.upload-icon').click(function(){
+        $('#fotoInput').click();
     });
 
 

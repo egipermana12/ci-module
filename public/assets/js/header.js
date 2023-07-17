@@ -13,6 +13,9 @@ $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
 });
 
 jQuery(document).ready(function () {
+    // untuk tooltip
+    $('[data-toggle="tooltip"]').tooltip();
+
     /**
      * untuk sidebar jika mempunyai child
      * @return {[type]}     [description]
