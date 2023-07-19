@@ -24,6 +24,143 @@ function tampilTable() {
     });
 }
 
+function selectWilayah() {
+    $("#kabupaten").html('<option value="">Pilih Kabupaten</option>');
+
+    $("#provinsi").select2({
+        dropdownParent: $("#staticBackdrop"),
+    });
+    $("#kabupaten").select2({
+        dropdownParent: $("#staticBackdrop"),
+    });
+
+    $("#provinsi").change(function (e) {
+        var id_provinsi = $("#provinsi").val();
+        var aksi = "getKabKota";
+        if (id_provinsi != "") {
+            $.ajax({
+                url: "Pegawai/getWilayah",
+                type: "POST",
+                data: {
+                    [csrfName]: csrfHash,
+                    id_provinsi: id_provinsi,
+                    getWilayah: aksi,
+                },
+                dataType: "JSON",
+                success: function (data) {
+                    var html = '<option value="">Pilih Kabupaten</option>';
+                    for (var i = 0; i < data.length; i++) {
+                        html +=
+                            '<option value="' +
+                            data[i].id_kabkota +
+                            '">' +
+                            data[i].nm_kabkota +
+                            "</option>";
+                    }
+                    $("#kabupaten").html(html);
+                },
+            });
+        } else {
+            $("#kabupaten").val("");
+            $("#kabupaten").html('<option value="">Pilih Kabupaten</option>');
+            $("#kecamatan").val("");
+            $("#kecamatan").html('<option value="">Pilih Kecamatan</option>');
+            $("#kelurahan").val("");
+            $("#kelurahan").html('<option value="">Pilih Kelurahan</option>');
+        }
+        $("#kecamatan").val("");
+    });
+
+    selectKecamatan();
+    selectKelurahan();
+}
+
+function selectKecamatan() {
+    $("#kecamatan").html('<option value="">Pilih Kecamatan</option>');
+    $("#kecamatan").select2({
+        dropdownParent: $("#staticBackdrop"),
+    });
+    $("#kabupaten").change(function (e) {
+        var id_provinsi = $("#provinsi").val();
+        var id_kabupaten = $("#kabupaten").val();
+        var aksi = "getKec";
+        if (id_kabupaten != "" && id_provinsi != "") {
+            $.ajax({
+                url: "Pegawai/getWilayah",
+                type: "POST",
+                data: {
+                    [csrfName]: csrfHash,
+                    id_kabupaten: id_kabupaten,
+                    id_provinsi: id_provinsi,
+                    getWilayah: aksi,
+                },
+                dataType: "JSON",
+                success: function (data) {
+                    var html = '<option value="">Pilih Kecamatan</option>';
+                    for (var i = 0; i < data.length; i++) {
+                        html +=
+                            '<option value="' +
+                            data[i].id_kecamatan +
+                            '">' +
+                            data[i].nm_kecamatan +
+                            "</option>";
+                    }
+                    $("#kecamatan").html(html);
+                },
+            });
+        } else {
+            $("#kecamatan").val("");
+            $("#kecamatan").html('<option value="">Pilih Kecamatan</option>');
+            $("#kelurahan").val("");
+            $("#kelurahan").html('<option value="">Pilih Kelurahan</option>');
+        }
+        $("#kelurahan").val("");
+    });
+}
+
+function selectKelurahan() {
+    $("#kelurahan").html('<option value="">Pilih Kelurahan</option>');
+    $("#kelurahan").select2({
+        dropdownParent: $("#staticBackdrop"),
+    });
+    $("#kecamatan").change(function (e) {
+        var id_kecamatan = $("#kecamatan").val();
+        var id_provinsi = $("#provinsi").val();
+        var id_kabupaten = $("#kabupaten").val();
+        var aksi = "getKel";
+        if (id_kecamatan != "") {
+            $.ajax({
+                url: "Pegawai/getWilayah",
+                type: "POST",
+                data: {
+                    [csrfName]: csrfHash,
+                    id_kecamatan: id_kecamatan,
+                    id_kabupaten: id_kabupaten,
+                    id_provinsi: id_provinsi,
+                    getWilayah: aksi,
+                },
+                dataType: "JSON",
+                success: function (data) {
+                    var html = '<option value="">Pilih Kelurahan</option>';
+                    for (var i = 0; i < data.length; i++) {
+                        html +=
+                            '<option value="' +
+                            data[i].id_kelurahan +
+                            '">' +
+                            data[i].nm_kelurahan +
+                            "</option>";
+                    }
+                    $("#kelurahan").html(html);
+                },
+            });
+        } else {
+            $("#kelurahan").val("");
+            $("#kelurahan").html('<option value="">Pilih Kelurahan</option>');
+        }
+        $("#kelurahan").val("");
+    });
+}
+
 function tampilData() {
     table = $("#data-tables").DataTable({
         processing: true,

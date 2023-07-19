@@ -4,13 +4,26 @@ namespace App\Controllers;
 
 use App\Controllers\BaseController;
 use App\Models\PegawaiModel;
+use App\Models\UnitKerjaModel;
+use App\Models\DivisiModel;
+use App\Models\ProvinsiModel;
+use App\Models\KabupatenModel;
+use App\Models\KecamatanModel;
+use App\Models\KelurahanModel;
 use \Hermawan\DataTables\DataTable;
+use App\Validation\PegawaiValidation;
 
 
 class Pegawai extends BaseController
 {
     public $validation;
     public $mPegawai;
+    public $mUnitKerja;
+    public $mDivisi;
+    public $mProvinsi;
+    public $mKab;
+    public $mKec;
+    public $mKel;
 
     public function __construct()
     {
@@ -21,6 +34,12 @@ class Pegawai extends BaseController
         $this->addJsBawah(base_url() .'assets/js/page/data-pegawai.js');
         $this->validation =  \Config\Services::validation();
         $this->mPegawai = new PegawaiModel;
+        $this->mUnitKerja = new UnitKerjaModel;
+        $this->mDivisi = new DivisiModel;
+        $this->mProvinsi = new ProvinsiModel;
+        $this->mKab = new KabupatenModel;
+        $this->mKec = new KecamatanModel;
+        $this->mKel = new KelurahanModel;
     }
 
     public function index()
@@ -60,6 +79,21 @@ class Pegawai extends BaseController
         }
     }
 
+    private function UnitKerja()
+    {
+        return $this->mUnitKerja->select('id_unit_kerja,nm_unit_kerja')->get()->getResultArray();
+    }
+
+    private function DivisiKerja()
+    {
+        return $this->mDivisi->select('id_divisi_kerja,nm_divisi')->get()->getResultArray();
+    }
+
+    private function Provinsi()
+    {
+        return $this->mProvinsi->select('id_provinsi,nm_provinsi')->get()->getResultArray();
+    }
+
     public function new()
     {
         if($this->request->isAJAX()){
@@ -79,11 +113,60 @@ class Pegawai extends BaseController
                 'tgl_bergabung' => '',
                 'foto_pegawai' => '',
                 'id' => '',
+                'unitKerja' => $this->UnitKerja(),
+                'divisKerja' => $this->DivisiKerja(),
+                'prov' => $this->Provinsi()
             ];
             return $this->response->setJSON([
                 'err' => false,
                 'data' => view('datapegawai/form', $data)
             ]);
+        }else{
+            return redirect()->to('/');
+        }
+    }
+
+    public function getWilayah()
+    {
+        if($this->request->isAJAX()){
+            if($this->request->getVar('getWilayah')){
+                $req = $this->request->getVar('getWilayah');
+                if($req == 'getKabKota'){
+                    $id_provinsi = $this->request->getVar('id_provinsi');
+                    $res = $this->mKab->select('id_kabkota,nm_kabkota')->where('id_provinsi',$id_provinsi)->findAll();
+                    echo json_encode($res);
+                }   
+                if($req == 'getKec'){
+                    $id_kabupaten = $this->request->getVar('id_kabupaten');
+                    $id_provinsi = $this->request->getVar('id_provinsi');
+                    $res = $this->mKec->select('id_kecamatan,nm_kecamatan')->where('id_kabkota',$id_kabupaten)->where('id_prov',$id_provinsi)->findAll();
+                    echo json_encode($res);
+                }
+                if($req == 'getKel'){
+                    $id_provinsi = $this->request->getVar('id_provinsi');
+                    $id_kabupaten = $this->request->getVar('id_kabupaten');
+                    $id_kecamatan = $this->request->getVar('id_kecamatan');
+                    $res = $this->mKel->select('id_kelurahan,nm_kelurahan')->where('id_provinsi', $id_provinsi)->where('id_kabkota', $id_kabupaten)->where('id_kecamatan',$id_kecamatan)->findAll();
+                    echo json_encode($res);
+                }
+            }
+        }else{
+            return redirect()->to('/');
+        }
+    }
+
+    public function create(){
+        if($this->request->isAJAX()){
+            $formRequest = new PegawaiValidation();
+            $rules = $formRequest->getRules($this->request->getPost());
+            $messages = $formRequest->getMessages($this->request->getPost());
+            if(!$this->validate($rules, $messages)){
+                return $this->response->setJSON([
+                    'err' => true,
+                    'messages' => $this->validation->getErrors()
+                ]);
+            }
+
         }else{
             return redirect()->to('/');
         }

@@ -40,6 +40,7 @@ if (empty($_SESSION['user'])) {
     <script type="text/javascript" src="<?=$config->baseURL . 'vendors/sweetalert2/sweetalert2.all.min.js' ?>"></script>
     <link rel="stylesheet" type="text/css" href="<?=$config->baseURL . 'vendors/sweetalert2/sweetalert2.min.css' ?>"/>
 
+    
 
     <!-- Dynamic style -->
     <?php
@@ -65,6 +66,11 @@ if (empty($_SESSION['user'])) {
     <script type="text/javascript" src="<?=$config->baseURL . 'vendors/js.cookie/js.cookie.min.js'?>"></script>
     <script type="text/javascript" src="<?=$config->baseURL . 'assets/js/header.js?r='?>"></script>
     <script type="text/javascript" src="<?=$config->baseURL . 'vendors/bootstrap/js/bootstrap.bundle.min.js'?>"></script>
+
+    <!-- select2 -->
+    <script type="text/javascript" src="<?=$config->baseURL . 'vendors/select2/select2.min.js' ?>"></script>
+    <link rel="stylesheet" type="text/css" href="<?=$config->baseURL . 'vendors/select2/select2.min.css' ?>"/>
+
 
     <!-- daterange -->
     <script type="text/javascript" src="<?=$config->baseURL . 'vendors/daterangepicker/moment.min.js' ?>"></script>
