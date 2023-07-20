@@ -40,4 +40,20 @@ class UnitKerjaModel extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
+
+    public function getUnitkerja()
+    {
+        $builder = $this->db->table('t_unit_kerja');
+        $builder->select('id_unit_kerja,nm_unit_kerja');
+        $query = $builder->get()->getResultArray();
+        return $query;
+    }
+
+    public function mapUnitkerja()
+    {
+        $mapp = $this->getUnitkerja();
+        $unitKerjaOptions = array_column($mapp, 'id_unit_kerja');
+        $split = implode(',', $unitKerjaOptions);
+        return $split;
+    }
 }

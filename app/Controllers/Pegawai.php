@@ -79,11 +79,6 @@ class Pegawai extends BaseController
         }
     }
 
-    private function UnitKerja()
-    {
-        return $this->mUnitKerja->select('id_unit_kerja,nm_unit_kerja')->get()->getResultArray();
-    }
-
     private function DivisiKerja()
     {
         return $this->mDivisi->select('id_divisi_kerja,nm_divisi')->get()->getResultArray();
@@ -113,7 +108,7 @@ class Pegawai extends BaseController
                 'tgl_bergabung' => '',
                 'foto_pegawai' => '',
                 'id' => '',
-                'unitKerja' => $this->UnitKerja(),
+                'unitKerja' => $this->mUnitKerja->getUnitkerja(),
                 'divisKerja' => $this->DivisiKerja(),
                 'prov' => $this->Provinsi()
             ];
@@ -157,16 +152,39 @@ class Pegawai extends BaseController
 
     public function create(){
         if($this->request->isAJAX()){
-            $formRequest = new PegawaiValidation();
+            $formRequest = new PegawaiValidation(); 
+            /**
+             * get post input
+             * @var [type]
+             */
             $rules = $formRequest->getRules($this->request->getPost());
             $messages = $formRequest->getMessages($this->request->getPost());
+
+            /**
+             * get post image
+             */
+            $imgReq = $this->request->getFile('foto_pegawai');
+            $imgRules = $formRequest->rulesImage($imgReq);
+            $imgMsg = $formRequest->messagesImage($imgReq);
+
             if(!$this->validate($rules, $messages)){
                 return $this->response->setJSON([
                     'err' => true,
                     'messages' => $this->validation->getErrors()
                 ]);
             }
-
+            if(!empty($imgReq)){
+                if(!$this->validate($imgRules, $imgMsg)){
+                    return $this->response->setJSON([
+                        'err' => true,
+                        'messages' => $this->validation->getErrors()
+                    ]);
+                }
+            }
+            return $this->response->setJSON([
+                'err' => false,
+                'messages' => 'Sukses'
+            ]);
         }else{
             return redirect()->to('/');
         }

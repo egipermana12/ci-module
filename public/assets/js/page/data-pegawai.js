@@ -47,6 +47,11 @@ function selectWilayah() {
                     getWilayah: aksi,
                 },
                 dataType: "JSON",
+                beforeSend: function () {
+                    $("#kabupaten").html(
+                        '<option value="">Loading...</option>'
+                    );
+                },
                 success: function (data) {
                     var html = '<option value="">Pilih Kabupaten</option>';
                     for (var i = 0; i < data.length; i++) {
@@ -95,6 +100,11 @@ function selectKecamatan() {
                     getWilayah: aksi,
                 },
                 dataType: "JSON",
+                beforeSend: function () {
+                    $("#kecamatan").html(
+                        '<option value="">Loading...</option>'
+                    );
+                },
                 success: function (data) {
                     var html = '<option value="">Pilih Kecamatan</option>';
                     for (var i = 0; i < data.length; i++) {
@@ -140,6 +150,11 @@ function selectKelurahan() {
                     getWilayah: aksi,
                 },
                 dataType: "JSON",
+                beforeSend: function () {
+                    $("#kelurahan").html(
+                        '<option value="">Loading...</option>'
+                    );
+                },
                 success: function (data) {
                     var html = '<option value="">Pilih Kelurahan</option>';
                     for (var i = 0; i < data.length; i++) {

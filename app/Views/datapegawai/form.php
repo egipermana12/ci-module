@@ -1,5 +1,5 @@
 <div class="modal fade shadow" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" style="z-index: 1000;">
-  <div class="modal-dialog modal-xl">
+  <div class="modal-dialog modal-fullscreen">
     <div class="modal-content">
       <div class="modal-header">
         <h1 class="modal-title fs-5" id="staticBackdropLabel"><?= $judul; ?></h1>
@@ -22,20 +22,30 @@
                     </label>
                 </div>
                 <div class="form-text">Allowed file types:  png, jpg, jpeg.</div>
+                <div class="mt-3 row justify-content-center">
+                    <div class="col-8">
+                        <div class="mt-3">
+                            <label for="nik" class="form-label fw-medium fs-6 text-light-emphasis">NIK <span class="text-danger form-text">(Nomor Induk Karyawan)</span></label>
+                            <input type="text" class="form-control form-control-lg" name="nik" id="nik" disabled placeholder="">
+                        </div>
+                    </div>
+                    <div class="col-4"></div>
+                </div>
+                <div class="form-text">NIK Otomatis terisi jika form sudah terisi semua</div>
             </div>
             <div class="col-6">
                 <h4 class="text-black mb-4">
                     Detail Pegawai
                 </h4>
                 <div class="mb-3">
-                  <label for="nmPegawai" class="form-label fw-medium fs-6 text-light-emphasis">Nama Pegawai <span class="text-danger">*</span></label>
-                  <input type="text" class="form-control form-control-lg" name="nm_pegawai" id="nmPegawai" placeholder="Jhon Doe">
+                  <label for="nm_pegawai" class="form-label fw-medium fs-6 text-light-emphasis">Nama Pegawai <span class="text-danger">*</span></label>
+                  <input type="text" class="form-control form-control-lg" name="nm_pegawai" id="nm_pegawai" placeholder="Jhon Doe">
               </div>
               <div class="row mb-3">
                 <label for="Gender" class="form-label fw-medium fs-6 text-light-emphasis">Gender <span class="text-danger">*</span></label>
                 <div class="col-auto">
                     <label class="label-radio">
-                        <input type="radio" name="jns_kelamin" value="L" class="card-input-element" checked />
+                        <input type="radio" id="jns_kelamin" name="jns_kelamin" value="L" class="card-input-element" checked />
                         <div class="panel panel-default card-input">
                             <div class="panel-body fw-medium fs-7 text-light-emphasis">
                                 Laki - Laki
@@ -45,7 +55,7 @@
                 </div>
                 <div class="col-auto">
                     <label class="label-radio">
-                        <input type="radio" name="jns_kelamin" value="P" class="card-input-element" />
+                        <input type="radio" id="jns_kelamin" name="jns_kelamin" value="P" class="card-input-element" />
                         <div class="panel panel-default card-input">
                             <div class="panel-body fs-7 fw-medium text-light-emphasis">
                                 Perempuan
@@ -55,28 +65,36 @@
                 </div>
             </div>
             <div class="mb-3">
-                <label for="unitKerja" class="form-label fw-medium fs-6 text-light-emphasis">Unit Kerja<span class="text-danger">*</span></label>
-                <select class="form-select" name="id_unit_kerja" aria-label="Default select example">
-                  <option value="" selected>Pilih Unit Kerja</option>
-                  <?php foreach($unitKerja as $val) : ?>
-                    <option value="<?= $val['id_unit_kerja']; ?>"><?= $val['nm_unit_kerja'] ?></option>
-                <?php endforeach; ?>
-            </select>
-        </div>
-        <div class="mb-3">
-            <label for="unitKerja" class="form-label fw-medium fs-6 text-light-emphasis">Divisi Kerja<span class="text-danger">*</span></label>
-            <select class="form-select" name="id_divisi" aria-label="Default select example">
-              <option value="" selected>Pilih Divisi Kerja</option>
-              <?php foreach($divisKerja as $val) : ?>
-                <option value="<?= $val['id_divisi_kerja'] ?>"><?= $val['nm_divisi'] ?></option>
+              <label for="tglLahir" class="form-label fw-medium fs-6 text-light-emphasis">Tanggal Lahir <span class="text-danger">*</span></label>
+              <input type="date" class="form-control form-control-lg" name="tgl_lahir" placeholder="YYYY-MM-DD" id="tgl_lahir">
+          </div>
+          <div class="mb-3">
+            <label for="tglLahir" class="form-label fw-medium fs-6 text-light-emphasis">Tanggal Bergabung <span class="text-danger">*</span></label>
+              <input type="date" class="form-control form-control-lg" name="tgl_bergabung" placeholder="YYYY-MM-DD" id="tgl_bergabung">
+          </div>
+          <div class="mb-3">
+            <label for="unitKerja" class="form-label fw-medium fs-6 text-light-emphasis">Unit Kerja<span class="text-danger">*</span></label>
+            <select class="form-select" name="id_unit_kerja" id="id_unit_kerja" aria-label="Default select example">
+              <option value="" selected>Pilih Unit Kerja</option>
+              <?php foreach($unitKerja as $val) : ?>
+                <option value="<?= $val['id_unit_kerja']; ?>"><?= $val['nm_unit_kerja'] ?></option>
             <?php endforeach; ?>
         </select>
     </div>
     <div class="mb-3">
-      <label for="alamat" class="form-label fw-medium fs-6 text-light-emphasis">Alamat <span class="text-danger">*</span></label>
-      <textarea class="form-control form-control-lg"></textarea>
-  </div>
-  <div class="mb-3">
+        <label for="unitKerja" class="form-label fw-medium fs-6 text-light-emphasis">Divisi Kerja<span class="text-danger">*</span></label>
+        <select class="form-select" name="id_divisi" aria-label="Default select example">
+          <option value="" selected>Pilih Divisi Kerja</option>
+          <?php foreach($divisKerja as $val) : ?>
+            <option value="<?= $val['id_divisi_kerja'] ?>"><?= $val['nm_divisi'] ?></option>
+        <?php endforeach; ?>
+    </select>
+</div>
+<div class="mb-3">
+  <label for="alamat" class="form-label fw-medium fs-6 text-light-emphasis">Alamat <span class="text-danger">*</span></label>
+  <textarea class="form-control form-control-lg"></textarea>
+</div>
+<div class="mb-3">
     <label for="Provinsi" class="fw-medium fs-6 text-light-emphasis">Pilih Provinsi<span class="text-danger">*</span>
     </label>
     <select class="form-select" data-control="select2" id="provinsi" aria-label="Provinsi">
@@ -89,17 +107,17 @@
 <div class="mb-3">
     <label for="unitKerja" class="form-label fw-medium fs-6 text-light-emphasis">Pilih Kabupaten Kota<span class="text-danger">*</span></label>
     <select class="form-select" aria-label="Default select example" id="kabupaten">
-  </select>
+    </select>
 </div>
 <div class="mb-3">
     <label for="unitKerja" class="form-label fw-medium fs-6 text-light-emphasis">Pilih Kecamatan<span class="text-danger">*</span></label>
     <select class="form-select" aria-label="Default select example" id="kecamatan">
-  </select>
+    </select>
 </div>
 <div class="mb-3">
     <label for="unitKerja" class="form-label fw-medium fs-6 text-light-emphasis">Pilih Keluarahan<span class="text-danger">*</span></label>
     <select class="form-select" aria-label="Default select example" id="kelurahan">
-  </select>
+    </select>
 </div>
 </div>
 </div>
@@ -116,7 +134,7 @@
 </div>
 
 <script>
-    
+
     selectWilayah();
 
     $('#form').on('submit', function(e){
@@ -152,7 +170,7 @@
                 }else{
                     Clear_Loading();
                     Berhasil(resp.messages);
-                    load();
+                    tampilTable();
                     $('.btn-close').click();
                 }
             }
@@ -199,6 +217,32 @@
 
     $('.upload-icon').click(function(){
         $('#fotoInput').click();
+    });
+
+    $('input[name="tgl_lahir"]').daterangepicker({
+        "parentEl": $('#staticBackdrop'),
+        "singleDatePicker": true,
+        "showDropdowns": true,
+        "autoApply": true,
+        "minYear": 1985,
+        "maxYear": parseInt(moment().format('YYYY'),10),
+        "locale": {
+            "format": "YYYY-MM-DD",
+        },
+        "drops": "auto"
+    });
+
+    $('input[name="tgl_bergabung"]').daterangepicker({
+        "parentEl": $('#staticBackdrop'),
+        "singleDatePicker": true,
+        "showDropdowns": true,
+        "autoApply": true,
+        "minYear": 2000,
+        "maxYear": parseInt(moment().format('YYYY'),10),
+        "locale": {
+            "format": "YYYY-MM-DD",
+        },
+        "drops": "auto",
     });
 
 
