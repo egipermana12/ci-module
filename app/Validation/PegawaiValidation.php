@@ -10,6 +10,9 @@ class PegawaiValidation
             'nm_pegawai' => [
                 'rules' => 'required',
             ],
+            'tgl_lahir' => [
+                'rules' => 'required|valid_date[Y-m-d]'
+            ]
         ];
     }
 
@@ -18,7 +21,11 @@ class PegawaiValidation
         return [
             'nm_pegawai' => [
                 'required' => 'Nama pegawai tidak boleh kosong'
-            ]
+            ],
+            'tgl_lahir' => [
+                'required' => 'Tanggal lahir harus diisi',
+                'valid_date' => 'Format tanggal harus YYYY-MM-DD'
+            ],
         ];
     }
 }
