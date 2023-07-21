@@ -150,6 +150,26 @@ class Pegawai extends BaseController
         }
     }
 
+    private function save($data[])
+    {
+        $messages = 'Something wrong';
+        $image = $data['foto_pegawai'];
+        if($image != ''){
+            $generateName = $image->getRandomName();
+            $data['foto_pegawai'] = $generateName; 
+        }
+        $save = $this->mPegawai->save($data);
+        if($save)
+        {
+            if (!empty($image) && !$image->hasMoved()) {
+                $image->move(WRITEPATH . '../public/images/PegawaiProfile', $generateName);
+            }
+            $message = 'Data berhasil disimpan';
+            return $message;
+        }
+        return $message;
+    }
+
     public function create(){
         if($this->request->isAJAX()){
             $formRequest = new PegawaiValidation(); 
