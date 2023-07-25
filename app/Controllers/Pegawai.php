@@ -159,8 +159,8 @@ class Pegawai extends BaseController
         $unitkerja = sprintf("%02d",$unitKerjaOri);
         $divisikerja = sprintf("%02d",$divisiKerjaOri);
         $count = $this->mPegawai->where('id_unit_kerja', $unitKerjaOri)
-                        ->where('id_divisi', $divisiKerjaOri)
-                        ->countAllResults(false);
+        ->where('id_divisi', $divisiKerjaOri)
+        ->countAllResults(false);
         $countZero = sprintf("%03d",$count + 1);
         $result = $tahun . $bulan . $unitkerja . $divisikerja . $countZero;
         return $result;
@@ -183,7 +183,59 @@ class Pegawai extends BaseController
         }
     }
 
-    private function save($data = array())
+    public function create(){
+        if($this->request->isAJAX()){
+            $formRequest = new PegawaiValidation(); 
+
+            $postData = $this->request->getPost();
+            $imgReq = $this->request->getFile('foto_pegawai');
+            $postData['foto_pegawai'] = $imgReq;
+
+            // Validasi data pegawai
+            $validationResult = $this->validatePegawaiData($formRequest, $postData, $imgReq);
+
+            if ($validationResult['success']) {
+                $saveMessage = $this->savePegawaiData($postData);
+                return $this->response->setJSON([
+                    'success' => true,
+                    'messages' => $saveMessage
+                ]);
+            } else {
+                return $this->response->setJSON([
+                    'success' => false,
+                    'messages' => $validationResult['errors']
+                ]);
+            }
+        }else{
+            return redirect()->to('/');
+        }
+    }
+
+    private function validatePegawaiData($formRequest, $postData, $imgReq)
+    {
+        $rules = $formRequest->getRules($postData);
+        $messages = $formRequest->getMessages($postData);
+        $imgRules = $formRequest->rulesImage($imgReq);
+        $imgMsg = $formRequest->messagesImage($imgReq);
+
+        if (!$this->validate($rules, $messages)) {
+            return [
+                'success' => false,
+                'errors' => $this->validation->getErrors()
+            ];
+        }
+
+        if (!empty($imgReq) && !$this->validate($imgRules, $imgMsg)) {
+            return [
+                'success' => false,
+                'errors' => $this->validation->getErrors()
+            ];
+        }
+
+        return ['success' => true];
+    }
+
+    private function savePegawaiData($data = array())
     {
         if (key_exists("foto_pegawai", $data)) {
             $image = $data['foto_pegawai'];
@@ -202,43 +254,6 @@ class Pegawai extends BaseController
         }
 
         return 'Something wrong';
-    }
-
-    public function create(){
-        if($this->request->isAJAX()){
-            $formRequest = new PegawaiValidation(); 
-
-            $postData = $this->request->getPost();
-            $imgReq = $this->request->getFile('foto_pegawai');
-            $postData['foto_pegawai'] = $imgReq;
-
-            $rules = $formRequest->getRules($postData);
-            $messages = $formRequest->getMessages($postData);
-            $imgRules = $formRequest->rulesImage($imgReq);
-            $imgMsg = $formRequest->messagesImage($imgReq);
-
-            if (!$this->validate($rules, $messages)) {
-                return $this->response->setJSON([
-                    'success' => false,
-                    'messages' => $this->validation->getErrors()
-                ]);
-            }
-
-            if (!empty($imgReq) && !$this->validate($imgRules, $imgMsg)) {
-                return $this->response->setJSON([
-                    'success' => false,
-                    'messages' => $this->validation->getErrors()
-                ]);
-            }
-
-            $saveMessage = $this->save($postData);
-            return $this->response->setJSON([
-                'success' => true,
-                'messages' => $saveMessage
-            ]);
-        }else{
-            return redirect()->to('/');
-        }
     }
 
     //batas
