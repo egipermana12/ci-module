@@ -13,6 +13,9 @@ class PegawaiValidation
             'nm_pegawai' => [
                 'rules' => 'required',
             ],
+            'nik' => [
+                'rules' => 'required|string|is_unique[t_data_pegawai.nik]'
+            ],
             'tgl_lahir' => [
                 'rules' => 'required|valid_date[Y-m-d]'
             ],
@@ -24,6 +27,9 @@ class PegawaiValidation
             ],
             'id_unit_kerja' => [
                 'rules' => 'required|in_list['.$list.']'
+            ],
+            'id_divisi' => [
+                'rules' => 'required'
             ]
         ];
     }
@@ -33,6 +39,11 @@ class PegawaiValidation
         return [
             'nm_pegawai' => [
                 'required' => 'Nama pegawai tidak boleh kosong'
+            ],
+            'nik' => [
+                'required' => 'NIK tidak boleh kosong',
+                'string' => 'Harus berupa string', 
+                'is_unique' => 'Nomor Induk Karyawan sudah terdaftar'
             ],
             'tgl_lahir' => [
                 'required' => 'Tanggal lahir harus diisi',
@@ -49,6 +60,9 @@ class PegawaiValidation
             'id_unit_kerja' => [
                 'required' => 'Unit kerja harus dipilih',
                 'in_list' => 'Unit kerja yang dipilih tidak sesuai'
+            ],
+            'id_divisi' => [
+                'required' => 'Divisi harus dipilih'
             ]
         ];
     }

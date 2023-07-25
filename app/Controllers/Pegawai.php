@@ -150,60 +150,91 @@ class Pegawai extends BaseController
         }
     }
 
-    private function save($data[])
+    private function generatorNIK($data = array())
     {
-        $messages = 'Something wrong';
-        $image = $data['foto_pegawai'];
-        if($image != ''){
-            $generateName = $image->getRandomName();
-            $data['foto_pegawai'] = $generateName; 
+        $unitKerjaOri = $data['id_unit_kerja'];
+        $divisiKerjaOri = $data['id_divisi'];
+        $tahun = date('Y', strtotime($data['tahun']));
+        $bulan = sprintf("%02d",date('m', strtotime($data['tahun'])));
+        $unitkerja = sprintf("%02d",$unitKerjaOri);
+        $divisikerja = sprintf("%02d",$divisiKerjaOri);
+        $count = $this->mPegawai->where('id_unit_kerja', $unitKerjaOri)
+                        ->where('id_divisi', $divisiKerjaOri)
+                        ->countAllResults(false);
+        $countZero = sprintf("%03d",$count + 1);
+        $result = $tahun . $bulan . $unitkerja . $divisikerja . $countZero;
+        return $result;
+    }
+
+    public function generateNIK()
+    {
+        if($this->request->isAJAX()){
+            $data = [
+                'tahun' => $this->request->getPost('thn_gabung'),
+                'id_unit_kerja' => $this->request->getPost('unitkerja'),
+                'id_divisi' => $this->request->getPost('divisKerja'),
+            ];
+            return $this->response->setJSON([
+                'success' => true,
+                'hasil' => $this->generatorNIK($data)
+            ]);
+        }else{
+            return redirect()->to('/');
         }
-        $save = $this->mPegawai->save($data);
-        if($save)
-        {
-            if (!empty($image) && !$image->hasMoved()) {
-                $image->move(WRITEPATH . '../public/images/PegawaiProfile', $generateName);
+    }
+
+    private function save($data = array())
+    {
+        if (key_exists("foto_pegawai", $data)) {
+            $image = $data['foto_pegawai'];
+            if($image != '')
+            {
+                $generateName = $image->getRandomName();
+                $data['foto_pegawai'] = $generateName;
             }
-            $message = 'Data berhasil disimpan';
-            return $message;
         }
-        return $message;
+
+        if ($this->mPegawai->save($data)) {
+            if (!empty($image) && !$image->hasMoved() && $image != '') {
+                $image->move(WRITEPATH . '../public/images/pegawai', $generateName);
+            }
+            return 'Data berhasil disimpan';
+        }
+
+        return 'Something wrong';
     }
 
     public function create(){
         if($this->request->isAJAX()){
             $formRequest = new PegawaiValidation(); 
-            /**
-             * get post input
-             * @var [type]
-             */
-            $rules = $formRequest->getRules($this->request->getPost());
-            $messages = $formRequest->getMessages($this->request->getPost());
 
-            /**
-             * get post image
-             */
+            $postData = $this->request->getPost();
             $imgReq = $this->request->getFile('foto_pegawai');
+            $postData['foto_pegawai'] = $imgReq;
+
+            $rules = $formRequest->getRules($postData);
+            $messages = $formRequest->getMessages($postData);
             $imgRules = $formRequest->rulesImage($imgReq);
             $imgMsg = $formRequest->messagesImage($imgReq);
 
-            if(!$this->validate($rules, $messages)){
+            if (!$this->validate($rules, $messages)) {
                 return $this->response->setJSON([
-                    'err' => true,
+                    'success' => false,
                     'messages' => $this->validation->getErrors()
                 ]);
             }
-            if(!empty($imgReq)){
-                if(!$this->validate($imgRules, $imgMsg)){
-                    return $this->response->setJSON([
-                        'err' => true,
-                        'messages' => $this->validation->getErrors()
-                    ]);
-                }
+
+            if (!empty($imgReq) && !$this->validate($imgRules, $imgMsg)) {
+                return $this->response->setJSON([
+                    'success' => false,
+                    'messages' => $this->validation->getErrors()
+                ]);
             }
+
+            $saveMessage = $this->save($postData);
             return $this->response->setJSON([
-                'err' => false,
-                'messages' => 'Sukses'
+                'success' => true,
+                'messages' => $saveMessage
             ]);
         }else{
             return redirect()->to('/');

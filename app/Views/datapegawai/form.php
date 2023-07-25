@@ -22,16 +22,18 @@
                     </label>
                 </div>
                 <div class="form-text">Allowed file types:  png, jpg, jpeg.</div>
-                <div class="mt-3 row justify-content-center">
+                <div class="mt-3 row justify-content-center align-items-end">
                     <div class="col-8">
                         <div class="mt-3">
                             <label for="nik" class="form-label fw-medium fs-6 text-light-emphasis">NIK <span class="text-danger form-text">(Nomor Induk Karyawan)</span></label>
-                            <input type="text" class="form-control form-control-lg" name="nik" id="nik" disabled placeholder="">
+                            <input type="text" class="form-control form-control-lg" name="nik" id="nik" placeholder="">
                         </div>
                     </div>
-                    <div class="col-4"></div>
+                    <div class="col-4">
+                        <button type="button" id="generateNIK" class="btn btn-success"><i class="fas fa-solid fa-rotate"></i></button>
+                    </div>
                 </div>
-                <div class="form-text">NIK Otomatis terisi jika form sudah terisi semua</div>
+                <div class="form-text">tekan tombol untuk generate otomatis</div>
             </div>
             <div class="col-6">
                 <h4 class="text-black mb-4">
@@ -83,7 +85,7 @@
     </div>
     <div class="mb-3">
         <label for="unitKerja" class="form-label fw-medium fs-6 text-light-emphasis">Divisi Kerja<span class="text-danger">*</span></label>
-        <select class="form-select" name="id_divisi" aria-label="Default select example">
+        <select class="form-select" name="id_divisi" id="id_divisi" aria-label="Default select example">
           <option value="" selected>Pilih Divisi Kerja</option>
           <?php foreach($divisKerja as $val) : ?>
             <option value="<?= $val['id_divisi_kerja'] ?>"><?= $val['nm_divisi'] ?></option>
@@ -92,12 +94,12 @@
 </div>
 <div class="mb-3">
   <label for="alamat" class="form-label fw-medium fs-6 text-light-emphasis">Alamat <span class="text-danger">*</span></label>
-  <textarea class="form-control form-control-lg"></textarea>
+  <textarea class="form-control form-control-lg" name="alamat"></textarea>
 </div>
 <div class="mb-3">
     <label for="Provinsi" class="fw-medium fs-6 text-light-emphasis">Pilih Provinsi<span class="text-danger">*</span>
     </label>
-    <select class="form-select" data-control="select2" id="provinsi" aria-label="Provinsi">
+    <select class="form-select" data-control="select2" name="kd_prov" id="provinsi" aria-label="Provinsi">
         <option value="">Pilih Provinsi</option>
         <?php foreach($prov as $val) : ?>
             <option value="<?= $val['id_provinsi'] ?>"><?= $val['nm_provinsi'] ?></option>
@@ -106,17 +108,17 @@
 </div>
 <div class="mb-3">
     <label for="unitKerja" class="form-label fw-medium fs-6 text-light-emphasis">Pilih Kabupaten Kota<span class="text-danger">*</span></label>
-    <select class="form-select" aria-label="Default select example" id="kabupaten">
+    <select class="form-select" aria-label="Default select example" name="kd_kab_kota" id="kabupaten">
     </select>
 </div>
 <div class="mb-3">
     <label for="unitKerja" class="form-label fw-medium fs-6 text-light-emphasis">Pilih Kecamatan<span class="text-danger">*</span></label>
-    <select class="form-select" aria-label="Default select example" id="kecamatan">
+    <select class="form-select" aria-label="Default select example" name="kd_kec" id="kecamatan">
     </select>
 </div>
 <div class="mb-3">
     <label for="unitKerja" class="form-label fw-medium fs-6 text-light-emphasis">Pilih Keluarahan<span class="text-danger">*</span></label>
-    <select class="form-select" aria-label="Default select example" id="kelurahan">
+    <select class="form-select" aria-label="Default select example" name="kd_kel" id="kelurahan">
     </select>
 </div>
 </div>
@@ -157,7 +159,7 @@
                 $('#btn-simpan').html('Simpan');
             },
             success: function(resp) {
-                if(resp.err) {
+                if(resp.success === false) {
                     Clear_Loading();
                     let errors = resp.messages;
                     for(const error in errors){
@@ -180,6 +182,43 @@
     $('#staticBackdrop').on('hidden.bs.modal', function () {
         $('.modal').remove();
     });  
+
+    // csrf untuk generate NIK
+    var csrfName = $("meta.csrf").attr("name"); //CSRF TOKEN NAME
+    var csrfHash = $("meta.csrf").attr("content"); //CSRF HASH
+
+    /**
+     * generate NIK
+     */
+    $('#generateNIK').click(function(e){
+        e.preventDefault();
+        let thn_gabung = $('#tgl_bergabung').val();
+        let unitkerja = $('#id_unit_kerja').val();
+        let divisKerja = $('#id_divisi').val();
+        if(thn_gabung == '' || unitkerja == '' || divisKerja == ''){
+            Peringatan('tanggal bergabung, unit kerja atau divis kerja masih kosong');
+        }else{
+            $.ajax({
+                type: "POST",
+                url: "Pegawai/generateNIK",
+                data: { [csrfName]: csrfHash, thn_gabung: thn_gabung, unitkerja: unitkerja, divisKerja: divisKerja},
+                dataType: "JSON",
+                beforeSend: function() {
+                    $('#generateNIK').attr('disabled', 'disabled');
+                    $('#generateNIK').html('<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>');
+                },
+                complete: function() {
+                    $('#generateNIK').removeAttr('disabled');
+                    $('#generateNIK').html('<i class="fas fa-solid fa-rotate">');
+                },
+                success: function(resp) {
+                    if(resp.success){
+                        $('#nik').val(resp.hasil);
+                    }
+                }
+            });
+        }
+    });
 
     /**
      * start upload image previw
@@ -219,6 +258,8 @@
         $('#fotoInput').click();
     });
 
+
+    // start datepicker
     $('input[name="tgl_lahir"]').daterangepicker({
         "parentEl": $('#staticBackdrop'),
         "singleDatePicker": true,

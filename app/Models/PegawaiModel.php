@@ -14,7 +14,7 @@ class PegawaiModel extends Model
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
     protected $allowedFields    = [
-        'nm_pegawai','tgl_lahir','jns_kelamin','no_hp','alamat','kd_prov','kd_kab_kota','kd_kec','kd_kel','id_unit_kerja','id_divisi','tgl_bergabung','foto_pegawai'
+        'nm_pegawai','tgl_lahir','jns_kelamin','no_hp','alamat','kd_prov','kd_kab_kota','kd_kec','kd_kel','id_unit_kerja','id_divisi','tgl_bergabung','foto_pegawai', 'nik'
     ];
 
     // Dates

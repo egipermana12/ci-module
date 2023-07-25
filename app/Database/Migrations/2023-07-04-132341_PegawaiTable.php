@@ -16,6 +16,11 @@ class PegawaiTable extends Migration
                 'null' => false,
                 'auto_increment' => true,
             ],
+            'nik' => [
+                'type'           => 'VARCHAR',
+                'constraint'     => '50',
+                'null' => false,
+            ],
             'nm_pegawai' => [
                 'type'           => 'VARCHAR',
                 'constraint'     => '50',
@@ -63,6 +68,11 @@ class PegawaiTable extends Migration
                 'unsigned'       => true,
             ],
             'id_divisi' => [
+                'type'           => 'SMALLINT',
+                'constraint'     => 5,
+                'unsigned'       => true,
+            ],
+            'id_jabatan' => [
                 'type'           => 'SMALLINT',
                 'constraint'     => 5,
                 'unsigned'       => true,
