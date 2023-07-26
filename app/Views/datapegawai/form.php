@@ -33,7 +33,7 @@
                         <button type="button" id="generateNIK" class="btn btn-success"><i class="fas fa-solid fa-rotate"></i></button>
                     </div>
                 </div>
-                <div class="form-text">tekan tombol untuk generate otomatis</div>
+                <div class="form-text">tekan tombol untuk generate NIK otomatis</div>
             </div>
             <div class="col-6">
                 <h4 class="text-black mb-4">
