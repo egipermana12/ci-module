@@ -31,7 +31,7 @@ class Pegawai extends BaseController
         $this->addJs(base_url() .'vendors/DataTables/datatables.min.js');
         $this->addStyle(base_url() .'vendors/DataTables/datatables.min.css');
         $this->addStyle( base_url() .'assets/css/page/data-pegawai.css');
-        $this->addJsBawah(base_url() .'assets/js/page/data-pegawai.js');
+        $this->addJs(base_url() .'assets/js/page/data-pegawai.js');
         $this->validation =  \Config\Services::validation();
         $this->mPegawai = new PegawaiModel;
         $this->mUnitKerja = new UnitKerjaModel;
@@ -107,7 +107,44 @@ class Pegawai extends BaseController
                 'id_divisi' => '',
                 'tgl_bergabung' => '',
                 'foto_pegawai' => '',
+                'foto_pegawai_old' => '',
                 'id' => '',
+                'nik' => '',
+                'unitKerja' => $this->mUnitKerja->getUnitkerja(),
+                'divisKerja' => $this->DivisiKerja(),
+                'prov' => $this->Provinsi()
+            ];
+            return $this->response->setJSON([
+                'err' => false,
+                'data' => view('datapegawai/form', $data)
+            ]);
+        }else{
+            return redirect()->to('/');
+        }
+    }
+
+    public function edit($id)
+    {
+        if($this->request->isAJAX()){
+            $find = $this->mPegawai->find($id);
+            $data = [
+                'judul' => 'Update Data Pegawai',
+                'nm_pegawai' => $find['nm_pegawai'],
+                'tgl_lahir' => $find['tgl_lahir'],
+                'jns_kelamin' => $find['jns_kelamin'],
+                'no_hp' => $find['no_hp'],
+                'alamat' => $find['alamat'],
+                'kd_prov' => $find['kd_prov'],
+                'kd_kab_kota' => $find['kd_kab_kota'],
+                'kd_kec' => $find['kd_kec'],
+                'kd_kel' => $find['kd_kel'],
+                'id_unit_kerja' => $find['id_unit_kerja'],
+                'id_divisi' => $find['id_divisi'],
+                'tgl_bergabung' => $find['tgl_bergabung'],
+                'foto_pegawai' => $find['foto_pegawai'],
+                'foto_pegawai_old' => $find['foto_pegawai'],
+                'id' => $find['id_pegawai'],
+                'nik' => $find['nik'],
                 'unitKerja' => $this->mUnitKerja->getUnitkerja(),
                 'divisKerja' => $this->DivisiKerja(),
                 'prov' => $this->Provinsi()
@@ -128,20 +165,20 @@ class Pegawai extends BaseController
                 $req = $this->request->getVar('getWilayah');
                 if($req == 'getKabKota'){
                     $id_provinsi = $this->request->getVar('id_provinsi');
-                    $res = $this->mKab->select('id_kabkota,nm_kabkota')->where('id_provinsi',$id_provinsi)->findAll();
+                    $res = $this->mKab->select('id_kabkota,nm_kabkota')->where('id_provinsi',$id_provinsi)->get()->getResultArray();
                     echo json_encode($res);
                 }   
                 if($req == 'getKec'){
                     $id_kabupaten = $this->request->getVar('id_kabupaten');
                     $id_provinsi = $this->request->getVar('id_provinsi');
-                    $res = $this->mKec->select('id_kecamatan,nm_kecamatan')->where('id_kabkota',$id_kabupaten)->where('id_prov',$id_provinsi)->findAll();
+                    $res = $this->mKec->select('id_kecamatan,nm_kecamatan')->where('id_kabkota',$id_kabupaten)->where('id_prov',$id_provinsi)->get()->getResultArray();
                     echo json_encode($res);
                 }
                 if($req == 'getKel'){
                     $id_provinsi = $this->request->getVar('id_provinsi');
                     $id_kabupaten = $this->request->getVar('id_kabupaten');
                     $id_kecamatan = $this->request->getVar('id_kecamatan');
-                    $res = $this->mKel->select('id_kelurahan,nm_kelurahan')->where('id_provinsi', $id_provinsi)->where('id_kabkota', $id_kabupaten)->where('id_kecamatan',$id_kecamatan)->findAll();
+                    $res = $this->mKel->select('id_kelurahan,nm_kelurahan')->where('id_provinsi', $id_provinsi)->where('id_kabkota', $id_kabupaten)->where('id_kecamatan',$id_kecamatan)->get()->getResultArray();
                     echo json_encode($res);
                 }
             }

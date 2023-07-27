@@ -1,8 +1,5 @@
 var csrfName = $("meta.csrf").attr("name"); //CSRF TOKEN NAME
 var csrfHash = $("meta.csrf").attr("content"); //CSRF HASH
-$.ajaxPrefilter(function (options, originalOptions, jqXHR) {
-    jqXHR.setRequestHeader("X-CSRF-Token", csrfHash);
-});
 
 function tampilTable() {
     Load_Section();
@@ -24,155 +21,110 @@ function tampilTable() {
     });
 }
 
-function selectWilayah() {
-    $("#kabupaten").html('<option value="">Pilih Kabupaten</option>');
-
-    $("#provinsi").select2({
-        dropdownParent: $("#staticBackdrop"),
-    });
+function selectKabupaten(id_provinsi, id_kab_selected = "") {
     $("#kabupaten").select2({
         dropdownParent: $("#staticBackdrop"),
     });
+    var aksi = "getKabKota";
+    $.ajax({
+        url: "Pegawai/getWilayah",
+        type: "POST",
+        data: {
+            [csrfName]: csrfHash,
+            id_provinsi: id_provinsi,
+            getWilayah: aksi,
+        },
+        dataType: "JSON",
+        beforeSend: function () {
+            $("#kabupaten").html('<option value="">Loading...</option>');
+        },
+        success: function (data) {
+            var html = '<option value="">Pilih Kabupaten</option>';
+            for (var i = 0; i < data.length; i++) {
+                html += '<option value="' + data[i].id_kabkota + '"';
 
-    $("#provinsi").change(function (e) {
-        var id_provinsi = $("#provinsi").val();
-        var aksi = "getKabKota";
-        if (id_provinsi != "") {
-            $.ajax({
-                url: "Pegawai/getWilayah",
-                type: "POST",
-                data: {
-                    [csrfName]: csrfHash,
-                    id_provinsi: id_provinsi,
-                    getWilayah: aksi,
-                },
-                dataType: "JSON",
-                beforeSend: function () {
-                    $("#kabupaten").html(
-                        '<option value="">Loading...</option>'
-                    );
-                },
-                success: function (data) {
-                    var html = '<option value="">Pilih Kabupaten</option>';
-                    for (var i = 0; i < data.length; i++) {
-                        html +=
-                            '<option value="' +
-                            data[i].id_kabkota +
-                            '">' +
-                            data[i].nm_kabkota +
-                            "</option>";
-                    }
-                    $("#kabupaten").html(html);
-                },
-            });
-        } else {
-            $("#kabupaten").val("");
-            $("#kabupaten").html('<option value="">Pilih Kabupaten</option>');
-            $("#kecamatan").val("");
-            $("#kecamatan").html('<option value="">Pilih Kecamatan</option>');
-            $("#kelurahan").val("");
-            $("#kelurahan").html('<option value="">Pilih Kelurahan</option>');
-        }
-        $("#kecamatan").val("");
+                if (data[i].id_kabkota === id_kab_selected) {
+                    html += " selected";
+                }
+
+                html += ">" + data[i].nm_kabkota + "</option>";
+            }
+            $("#kabupaten").html(html);
+        },
     });
-
-    selectKecamatan();
-    selectKelurahan();
 }
 
-function selectKecamatan() {
-    $("#kecamatan").html('<option value="">Pilih Kecamatan</option>');
+function selectKecamatan(id_provinsi, id_kabupaten, id_kec_selected = "") {
     $("#kecamatan").select2({
         dropdownParent: $("#staticBackdrop"),
     });
-    $("#kabupaten").change(function (e) {
-        var id_provinsi = $("#provinsi").val();
-        var id_kabupaten = $("#kabupaten").val();
-        var aksi = "getKec";
-        if (id_kabupaten != "" && id_provinsi != "") {
-            $.ajax({
-                url: "Pegawai/getWilayah",
-                type: "POST",
-                data: {
-                    [csrfName]: csrfHash,
-                    id_kabupaten: id_kabupaten,
-                    id_provinsi: id_provinsi,
-                    getWilayah: aksi,
-                },
-                dataType: "JSON",
-                beforeSend: function () {
-                    $("#kecamatan").html(
-                        '<option value="">Loading...</option>'
-                    );
-                },
-                success: function (data) {
-                    var html = '<option value="">Pilih Kecamatan</option>';
-                    for (var i = 0; i < data.length; i++) {
-                        html +=
-                            '<option value="' +
-                            data[i].id_kecamatan +
-                            '">' +
-                            data[i].nm_kecamatan +
-                            "</option>";
-                    }
-                    $("#kecamatan").html(html);
-                },
-            });
-        } else {
-            $("#kecamatan").val("");
-            $("#kecamatan").html('<option value="">Pilih Kecamatan</option>');
-            $("#kelurahan").val("");
-            $("#kelurahan").html('<option value="">Pilih Kelurahan</option>');
-        }
-        $("#kelurahan").val("");
+    var aksi = "getKec";
+    $.ajax({
+        url: "Pegawai/getWilayah",
+        type: "POST",
+        data: {
+            [csrfName]: csrfHash,
+            id_provinsi: id_provinsi,
+            id_kabupaten: id_kabupaten,
+            getWilayah: aksi,
+        },
+        dataType: "JSON",
+        beforeSend: function () {
+            $("#kecamatan").html('<option value="">Loading...</option>');
+        },
+        success: function (data) {
+            var html = '<option value="">Pilih Kecamatan</option>';
+            for (var i = 0; i < data.length; i++) {
+                html += '<option value="' + data[i].id_kecamatan + '"';
+
+                if (data[i].id_kecamatan === id_kec_selected) {
+                    html += " selected";
+                }
+
+                html += ">" + data[i].nm_kecamatan + "</option>";
+            }
+            $("#kecamatan").html(html);
+        },
     });
 }
 
-function selectKelurahan() {
-    $("#kelurahan").html('<option value="">Pilih Kelurahan</option>');
+function selectKelurahan(
+    id_provinsi,
+    id_kabupaten,
+    id_kecamatan,
+    id_kel_selected = ""
+) {
     $("#kelurahan").select2({
         dropdownParent: $("#staticBackdrop"),
     });
-    $("#kecamatan").change(function (e) {
-        var id_kecamatan = $("#kecamatan").val();
-        var id_provinsi = $("#provinsi").val();
-        var id_kabupaten = $("#kabupaten").val();
-        var aksi = "getKel";
-        if (id_kecamatan != "") {
-            $.ajax({
-                url: "Pegawai/getWilayah",
-                type: "POST",
-                data: {
-                    [csrfName]: csrfHash,
-                    id_kecamatan: id_kecamatan,
-                    id_kabupaten: id_kabupaten,
-                    id_provinsi: id_provinsi,
-                    getWilayah: aksi,
-                },
-                dataType: "JSON",
-                beforeSend: function () {
-                    $("#kelurahan").html(
-                        '<option value="">Loading...</option>'
-                    );
-                },
-                success: function (data) {
-                    var html = '<option value="">Pilih Kelurahan</option>';
-                    for (var i = 0; i < data.length; i++) {
-                        html +=
-                            '<option value="' +
-                            data[i].id_kelurahan +
-                            '">' +
-                            data[i].nm_kelurahan +
-                            "</option>";
-                    }
-                    $("#kelurahan").html(html);
-                },
-            });
-        } else {
-            $("#kelurahan").val("");
-            $("#kelurahan").html('<option value="">Pilih Kelurahan</option>');
-        }
-        $("#kelurahan").val("");
+    var aksi = "getKel";
+    $.ajax({
+        url: "Pegawai/getWilayah",
+        type: "POST",
+        data: {
+            [csrfName]: csrfHash,
+            id_provinsi: id_provinsi,
+            id_kabupaten: id_kabupaten,
+            id_kecamatan: id_kecamatan,
+            getWilayah: aksi,
+        },
+        dataType: "JSON",
+        beforeSend: function () {
+            $("#kelurahan").html('<option value="">Loading...</option>');
+        },
+        success: function (data) {
+            var html = '<option value="">Pilih Kelurahan</option>';
+            for (var i = 0; i < data.length; i++) {
+                html += '<option value="' + data[i].id_kelurahan + '"';
+
+                if (data[i].id_kelurahan === id_kel_selected) {
+                    html += " selected";
+                }
+
+                html += ">" + data[i].nm_kelurahan + "</option>";
+            }
+            $("#kelurahan").html(html);
+        },
     });
 }
 
@@ -241,9 +193,6 @@ $(document).ready(function () {
 
     $("#btn-edit").click(function (e) {
         e.preventDefault();
-        /**
-         * untuk handle checbox
-         */
         let checked = [];
         $("input[name='pegawaicb']:checked").each(function () {
             checked.push($(this).val());
@@ -254,7 +203,6 @@ $(document).ready(function () {
             Peringatan("Harus pilih satu data!");
         } else {
             Load_Loading();
-            console.log(dataCheck);
             $.ajax({
                 type: "POST",
                 url: "Pegawai/edit/" + dataCheck,

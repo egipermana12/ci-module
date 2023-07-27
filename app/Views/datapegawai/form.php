@@ -12,7 +12,8 @@
             <div class="row mt-3 justify-content-center">
                 <div class="col-4 offset-1">
                     <div class="wrapper-upload position-relative d-inline-block shadow-lg">
-                        <img class="image-wrapper" id="previewFoto" alt="" src="<?= base_url("images/pegawai/default.svg"); ?>" />
+                        <?php $image="default.svg"; strlen($foto_pegawai) == 0 ? $image : $image = $foto_pegawai ?>
+                        <img class="image-wrapper" id="previewFoto" alt="" src="<?= base_url("images/pegawai/" . $image); ?>" />
                         <label for="fotoInput" class="wrapper-profile shadow">
                           <i class="fas fa-solid fa-pen" class="upload-icon" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Tooltip on top"></i>
                           <input type="file" name="foto_pegawai" id="fotoInput" accept=".png, .jpg, .jpeg">
@@ -41,13 +42,13 @@
                 </h4>
                 <div class="mb-3">
                   <label for="nm_pegawai" class="form-label fw-medium fs-6 text-light-emphasis">Nama Pegawai <span class="text-danger">*</span></label>
-                  <input type="text" class="form-control form-control-lg" name="nm_pegawai" id="nm_pegawai" placeholder="Jhon Doe">
+                  <input type="text" class="form-control form-control-lg" name="nm_pegawai" value="<?= $nm_pegawai; ?>" id="nm_pegawai" placeholder="Jhon Doe">
               </div>
               <div class="row mb-3">
                 <label for="Gender" class="form-label fw-medium fs-6 text-light-emphasis">Gender <span class="text-danger">*</span></label>
                 <div class="col-auto">
                     <label class="label-radio">
-                        <input type="radio" id="jns_kelamin" name="jns_kelamin" value="L" class="card-input-element" checked />
+                        <input type="radio" id="jns_kelamin" name="jns_kelamin" value="L" <?= $jns_kelamin == "L" ? 'checked="checked"' : '' ?> class="card-input-element" checked />
                         <div class="panel panel-default card-input">
                             <div class="panel-body fw-medium fs-7 text-light-emphasis">
                                 Laki - Laki
@@ -57,7 +58,7 @@
                 </div>
                 <div class="col-auto">
                     <label class="label-radio">
-                        <input type="radio" id="jns_kelamin" name="jns_kelamin" value="P" class="card-input-element" />
+                        <input type="radio" id="jns_kelamin" name="jns_kelamin" value="P" <?= $jns_kelamin == "P" ? 'checked="checked"' : '' ?> class="card-input-element" />
                         <div class="panel panel-default card-input">
                             <div class="panel-body fs-7 fw-medium text-light-emphasis">
                                 Perempuan
@@ -68,18 +69,19 @@
             </div>
             <div class="mb-3">
               <label for="tglLahir" class="form-label fw-medium fs-6 text-light-emphasis">Tanggal Lahir <span class="text-danger">*</span></label>
-              <input type="date" class="form-control form-control-lg" name="tgl_lahir" placeholder="YYYY-MM-DD" id="tgl_lahir">
+              <input type="text" class="form-control form-control-lg" name="tgl_lahir" value="<?= $tgl_lahir; ?>" placeholder="1992-12-12" id="tgl_lahir">
           </div>
           <div class="mb-3">
             <label for="tglLahir" class="form-label fw-medium fs-6 text-light-emphasis">Tanggal Bergabung <span class="text-danger">*</span></label>
-              <input type="date" class="form-control form-control-lg" name="tgl_bergabung" placeholder="YYYY-MM-DD" id="tgl_bergabung">
-          </div>
-          <div class="mb-3">
+            <input type="text" class="form-control form-control-lg" name="tgl_bergabung" placeholder="2023-12-12" value="<?= $tgl_bergabung; ?>" id="tgl_bergabung">
+        </div>
+        <div class="mb-3">
             <label for="unitKerja" class="form-label fw-medium fs-6 text-light-emphasis">Unit Kerja<span class="text-danger">*</span></label>
             <select class="form-select" name="id_unit_kerja" id="id_unit_kerja" aria-label="Default select example">
               <option value="" selected>Pilih Unit Kerja</option>
               <?php foreach($unitKerja as $val) : ?>
-                <option value="<?= $val['id_unit_kerja']; ?>"><?= $val['nm_unit_kerja'] ?></option>
+                <?php $selected = ($id_unit_kerja == $val['id_unit_kerja']) ? 'selected' : ''; ?>
+                <option <?= $selected; ?> value="<?= $val['id_unit_kerja']; ?>" ><?= $val['nm_unit_kerja'] ?></option>
             <?php endforeach; ?>
         </select>
     </div>
@@ -88,13 +90,14 @@
         <select class="form-select" name="id_divisi" id="id_divisi" aria-label="Default select example">
           <option value="" selected>Pilih Divisi Kerja</option>
           <?php foreach($divisKerja as $val) : ?>
-            <option value="<?= $val['id_divisi_kerja'] ?>"><?= $val['nm_divisi'] ?></option>
+            <?php $selected = ($id_divisi == $val['id_divisi_kerja']) ? 'selected' : ''; ?>
+            <option <?= $selected; ?> value="<?= $val['id_divisi_kerja'] ?>"><?= $val['nm_divisi'] ?></option>
         <?php endforeach; ?>
     </select>
 </div>
 <div class="mb-3">
   <label for="alamat" class="form-label fw-medium fs-6 text-light-emphasis">Alamat <span class="text-danger">*</span></label>
-  <textarea class="form-control form-control-lg" name="alamat"></textarea>
+  <textarea class="form-control form-control-lg" name="alamat"><?= $alamat; ?></textarea>
 </div>
 <div class="mb-3">
     <label for="Provinsi" class="fw-medium fs-6 text-light-emphasis">Pilih Provinsi<span class="text-danger">*</span>
@@ -102,23 +105,27 @@
     <select class="form-select" data-control="select2" name="kd_prov" id="provinsi" aria-label="Provinsi">
         <option value="">Pilih Provinsi</option>
         <?php foreach($prov as $val) : ?>
-            <option value="<?= $val['id_provinsi'] ?>"><?= $val['nm_provinsi'] ?></option>
+            <?php $selected = ($kd_prov == $val['id_provinsi']) ? 'selected' : ''; ?>
+            <option <?= $selected; ?> value="<?= $val['id_provinsi'] ?>"><?= $val['nm_provinsi'] ?></option>
         <?php endforeach; ?>
     </select>
 </div>
 <div class="mb-3">
     <label for="unitKerja" class="form-label fw-medium fs-6 text-light-emphasis">Pilih Kabupaten Kota<span class="text-danger">*</span></label>
     <select class="form-select" aria-label="Default select example" name="kd_kab_kota" id="kabupaten">
+        <option value="">Pilih Kabupaten</option>
     </select>
 </div>
 <div class="mb-3">
     <label for="unitKerja" class="form-label fw-medium fs-6 text-light-emphasis">Pilih Kecamatan<span class="text-danger">*</span></label>
     <select class="form-select" aria-label="Default select example" name="kd_kec" id="kecamatan">
+        <option value="">Pilih Kecamatan</option>
     </select>
 </div>
 <div class="mb-3">
     <label for="unitKerja" class="form-label fw-medium fs-6 text-light-emphasis">Pilih Keluarahan<span class="text-danger">*</span></label>
     <select class="form-select" aria-label="Default select example" name="kd_kel" id="kelurahan">
+        <option value="">Pilih Kelurahan</option>
     </select>
 </div>
 </div>
@@ -127,6 +134,10 @@
 </div>
 <div class="modal-footer">
     <input type="hidden" name="id" value="<?= $id; ?>">
+    <input type="hidden" id="kd_prov" value="<?= $kd_prov; ?>">
+    <input type="hidden" id="kd_kab_kota" value="<?= $kd_kab_kota; ?>">
+    <input type="hidden" id="kd_kec" value="<?= $kd_kec; ?>">
+    <input type="hidden" id="kd_kel" value="<?= $kd_kel; ?>">
     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
     <button type="submit" id="btn-simpan" class="btn btn-primary">Simpan</button>
 </div>
@@ -137,7 +148,57 @@
 
 <script>
 
-    selectWilayah();
+    $("#provinsi").change(function (e) {
+        var id_provinsi = $("#provinsi").val();
+        if (id_provinsi != "") {
+            selectKabupaten(id_provinsi);
+        } else {
+            $("#kabupaten").val("");
+            $("#kabupaten").html('<option value="">Pilih Kabupaten</option>');
+        }
+        $("#kecamatan").val("");
+            $("#kecamatan").html('<option value="">Pilih Kecamatan</option>');   
+            $("#kelurahan").val("");
+            $("#kelurahan").html('<option value="">Pilih Kelurahan</option>'); 
+    });
+
+    $("#kabupaten").change(function (e) {
+        var id_provinsi = $("#provinsi").val();
+        var id_kabupaten = $("#kabupaten").val();
+        if (id_provinsi != "" && id_kabupaten != "") {
+            selectKecamatan(id_provinsi, id_kabupaten);
+        } else {
+            $("#kecamatan").val("");
+            $("#kecamatan").html('<option value="">Pilih Kecamatan</option>');
+             
+        }
+        $("#kelurahan").val("");
+            $("#kelurahan").html('<option value="">Pilih Kelurahan</option>');
+    });
+
+    $("#kecamatan").change(function (e) {
+        var id_provinsi = $("#provinsi").val();
+        var id_kabupaten = $("#kabupaten").val();
+        var id_kecamatan = $("#kecamatan").val();
+        if (id_provinsi != "" && id_kabupaten != "" && id_kecamatan != "") {
+            selectKelurahan(id_provinsi, id_kabupaten, id_kecamatan);
+        } else {
+            $("#kelurahan").val("");
+            $("#kelurahan").html('<option value="">Pilih Kelurahan</option>');
+        }
+    });
+
+    var edit = $('#id').val();
+    if(edit != ""){
+        var id_provinsi_edit = $("#kd_prov").val();
+        var id_kabupaten_edit = $("#kd_kab_kota").val();
+        var id_kec_edit = $("#kd_kec").val();
+        var id_kel_edit = $("#kd_kel").val();
+        selectKabupaten(id_provinsi_edit, id_kabupaten_edit);
+        selectKecamatan(id_provinsi_edit, id_kabupaten_edit, id_kec_edit);
+        selectKelurahan(id_provinsi_edit, id_kabupaten_edit, id_kec_edit, id_kel_edit);
+    }
+
 
     $('#form').on('submit', function(e){
         e.preventDefault();
@@ -259,31 +320,17 @@
     });
 
 
-    // start datepicker
-    $('input[name="tgl_lahir"]').daterangepicker({
-        "parentEl": $('#staticBackdrop'),
-        "singleDatePicker": true,
-        "showDropdowns": true,
-        "autoApply": true,
-        "minYear": 1985,
-        "maxYear": parseInt(moment().format('YYYY'),10),
-        "locale": {
-            "format": "YYYY-MM-DD",
-        },
-        "drops": "auto"
+    $('#tgl_lahir').datepicker({
+        changeYear: true,
+        changeMonth: true,
+        yearRange: "1985:2025",
+        dateFormat: "yy-mm-dd"
     });
-
-    $('input[name="tgl_bergabung"]').daterangepicker({
-        "parentEl": $('#staticBackdrop'),
-        "singleDatePicker": true,
-        "showDropdowns": true,
-        "autoApply": true,
-        "minYear": 2000,
-        "maxYear": parseInt(moment().format('YYYY'),10),
-        "locale": {
-            "format": "YYYY-MM-DD",
-        },
-        "drops": "auto",
+    $('#tgl_bergabung').datepicker({
+        changeYear: true,
+        changeMonth: true,
+        yearRange: "2000:2030",
+        dateFormat: "yy-mm-dd"
     });
 
 

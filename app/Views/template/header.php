@@ -21,19 +21,19 @@ if (empty($_SESSION['user'])) {
     <title><?=$site_title?></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="<?=$config->baseURL . 'vendors/bootstrap/css/bootstrap.min.css?' ?>">
-    <link rel="stylesheet" type="text/css" href="<?=$config->baseURL . 'vendors/fontawesome/css/all.css?r='?>"/>
-    <link rel="stylesheet" type="text/css" href="<?=$config->baseURL . 'vendors/bootstrap-icons/bootstrap-icons.css?r='?>"/>
-    <link rel="stylesheet" type="text/css" href="<?=$config->baseURL . 'assets/css/dashboard.css?r=' ?>">
+    <link rel="stylesheet" type="text/css" href="<?=$config->baseURL . 'vendors/fontawesome/css/all.css'?>"/>
+    <link rel="stylesheet" type="text/css" href="<?=$config->baseURL . 'vendors/bootstrap-icons/bootstrap-icons.css'?>"/>
+    <link rel="stylesheet" type="text/css" href="<?=$config->baseURL . 'assets/css/dashboard.css' ?>">
     <!-- untuk dark theme -->
-    <link rel="stylesheet" type="text/css" href="<?=$config->baseURL . 'assets/css/theme/dark-theme.css?r=' ?>">
+    <link rel="stylesheet" type="text/css" href="<?=$config->baseURL . 'assets/css/theme/dark-theme.css' ?>">
 
     <meta name="<?= csrf_token() ?>" content="<?= csrf_hash() ?>" class="csrf">
 
     <!-- untuk css custom dari setting -->
-    <link rel="stylesheet" type="text/css" href="<?=$config->baseURL . 'assets/css/theme/color-scheme/'.$app_layout['color_scheme'].'.css?r=' ?>">    
-    <link rel="stylesheet" type="text/css" href="<?=$config->baseURL . 'vendors/bootswatch/'.$app_layout['bootswatch_theme'].'/bootstrap.min.css?r=' ?>">   
-    <link rel="stylesheet" type="text/css" href="<?=$config->baseURL . 'assets/css/theme/color-scheme/'.$app_layout['sidebar_color'].'-sidebar.css?r=' ?>">      
-    <link rel="stylesheet" type="text/css" href="<?=$config->baseURL . 'assets/css/theme/color-scheme/'.$app_layout['logo_background_color'].'-logo-background.css?r=' ?>">    
+    <link rel="stylesheet" type="text/css" href="<?=$config->baseURL . 'assets/css/theme/color-scheme/'.$app_layout['color_scheme'].'.css' ?>">    
+    <link rel="stylesheet" type="text/css" href="<?=$config->baseURL . 'vendors/bootswatch/'.$app_layout['bootswatch_theme'].'/bootstrap.min.css' ?>">   
+    <link rel="stylesheet" type="text/css" href="<?=$config->baseURL . 'assets/css/theme/color-scheme/'.$app_layout['sidebar_color'].'-sidebar.css' ?>">      
+    <link rel="stylesheet" type="text/css" href="<?=$config->baseURL . 'assets/css/theme/color-scheme/'.$app_layout['logo_background_color'].'-logo-background.css' ?>">    
 
 
     <!-- sweetalert -->
@@ -54,18 +54,22 @@ if (empty($_SESSION['user'])) {
                     }
                 }
                 $file = $file['url'];
-                echo '<link rel="stylesheet" ' . $attr . ' type="text/css" href="'.$file.'?r='.time().'"/>' . "\n";
+                echo '<link rel="stylesheet" ' . $attr . ' type="text/css" href="'.$file.'"/>' . "\n";
             } else {
-                echo '<link rel="stylesheet" type="text/css" href="'.$file.'?r='.time().'"/>' . "\n";
+                echo '<link rel="stylesheet" type="text/css" href="'.$file.'"/>' . "\n";
             }
         }
     }
     ?>
 
-    <script type="text/javascript" src="<?=$config->baseURL . 'vendors/jquery/jquery.min.js?r='?>"></script>
+    <script type="text/javascript" src="<?=$config->baseURL . 'vendors/jquery/jquery.min.js'?>"></script>
     <script type="text/javascript" src="<?=$config->baseURL . 'vendors/js.cookie/js.cookie.min.js'?>"></script>
-    <script type="text/javascript" src="<?=$config->baseURL . 'assets/js/header.js?r='?>"></script>
+    <script type="text/javascript" src="<?=$config->baseURL . 'assets/js/header.js'?>"></script>
     <script type="text/javascript" src="<?=$config->baseURL . 'vendors/bootstrap/js/bootstrap.bundle.min.js'?>"></script>
+
+    <!-- jqueryui -->
+    <script type="text/javascript" src="<?=$config->baseURL . 'vendors/jqueryui/jquery-ui.min.js'?>"></script>
+    <link rel="stylesheet" type="text/css" href="<?=$config->baseURL . 'vendors/jqueryui/jquery-ui.min.css' ?>"/>
 
     <!-- select2 -->
     <script type="text/javascript" src="<?=$config->baseURL . 'vendors/select2/select2.min.js' ?>"></script>
@@ -86,7 +90,7 @@ if (empty($_SESSION['user'])) {
                     echo '<script type="text/javascript">' . $file['script'] . '</script>' . "\n";
                 }
             } else {
-                echo '<script type="text/javascript" src="'.$file.'?r='.'"></script>' . "\n";
+                echo '<script type="text/javascript" src="'.$file.'?'.'"></script>' . "\n";
             }
         }
     }

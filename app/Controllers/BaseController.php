@@ -60,7 +60,7 @@ abstract class BaseController extends Controller
      *
      * @var array
      */
-    protected $helpers = ['csrf', 'utils', 'form', 'inputRupiah'];
+    protected $helpers = ['csrf', 'utils', 'form', 'inputRupiah', 'global'];
 
     /**
      * Be sure to declare properties for any property fetch you initialized.

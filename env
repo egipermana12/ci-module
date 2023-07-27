@@ -118,6 +118,19 @@
 # security.redirect = false
 # security.samesite = 'Lax'
 
+/**
+ * contoh setting csrf
+ * security.csrfProtection = 'cookie'
+# security.tokenRandomize = false
+ security.tokenName = 'csrf_absensi_apps'
+ security.headerName = 'X-CSRF-TOKEN'
+ security.cookieName = 'csrf_cookie_absensi_apps'
+ security.expires = 7200
+ security.regenerate = false
+ security.redirect = true
+# security.samesite = 'Lax'
+ */
+
 #--------------------------------------------------------------------
 # SESSION
 #--------------------------------------------------------------------
