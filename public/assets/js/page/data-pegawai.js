@@ -225,4 +225,50 @@ $(document).ready(function () {
             });
         }
     });
+
+    $("#btn-delete").click(function (e) {
+        e.preventDefault();
+        let checked = [];
+        $("input[name='pegawaicb']:checked").each(function () {
+            checked.push($(this).val());
+        });
+        let length = $("input[name='pegawaicb']:checked").length;
+        let dataCheck = checked.join(",");
+        if (length < 1) {
+            Peringatan("Belum ada data yang dipilih");
+        } else {
+            Swal.fire({
+                title: "Hapus Data Pegawai?",
+                text: "Yakin hapus data pegawai ?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Ya, hapus data!",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Load_Loading();
+                    $.ajax({
+                        type: "POST",
+                        url: "Pegawai/destroy",
+                        data: { [csrfName]: csrfHash, id: dataCheck },
+                        success: function (res) {
+                            Clear_Loading();
+                            Berhasil(res.messages);
+                            tampilTable();
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            alert(
+                                xhr.status +
+                                    "\n" +
+                                    xhr.responseText +
+                                    "\n" +
+                                    thrownError
+                            );
+                        },
+                    });
+                }
+            });
+        }
+    });
 });

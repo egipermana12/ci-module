@@ -27,12 +27,16 @@
                     <div class="col-8">
                         <div class="mt-3">
                             <label for="nik" class="form-label fw-medium fs-6 text-light-emphasis">NIK <span class="text-danger form-text">(Nomor Induk Karyawan)</span></label>
-                            <input type="text" class="form-control form-control-lg" name="nik" id="nik" placeholder="">
+                            <input type="text" class="form-control form-control-lg" name="nik" id="nik" value="<?= $nik; ?>" placeholder="">
                         </div>
                     </div>
-                    <div class="col-4">
-                        <button type="button" id="generateNIK" class="btn btn-success"><i class="fas fa-solid fa-rotate"></i></button>
-                    </div>
+                    <?php if($id == "") { ?>
+                        <div class="col-4">
+                            <button type="button" id="generateNIK" class="btn btn-success"><i class="fas fa-solid fa-rotate"></i></button>
+                        </div>
+                    <?php }else { ?>
+                        <div class="col-4"></div>
+                    <?php } ?>
                 </div>
                 <div class="form-text">tekan tombol untuk generate NIK otomatis</div>
             </div>
@@ -138,6 +142,7 @@
     <input type="hidden" id="kd_kab_kota" value="<?= $kd_kab_kota; ?>">
     <input type="hidden" id="kd_kec" value="<?= $kd_kec; ?>">
     <input type="hidden" id="kd_kel" value="<?= $kd_kel; ?>">
+    <input type="hidden" name="foto_pegawai_old" id="foto_pegawai_old" value="<?= $foto_pegawai_old; ?>">
     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
     <button type="submit" id="btn-simpan" class="btn btn-primary">Simpan</button>
 </div>
@@ -157,9 +162,9 @@
             $("#kabupaten").html('<option value="">Pilih Kabupaten</option>');
         }
         $("#kecamatan").val("");
-            $("#kecamatan").html('<option value="">Pilih Kecamatan</option>');   
-            $("#kelurahan").val("");
-            $("#kelurahan").html('<option value="">Pilih Kelurahan</option>'); 
+        $("#kecamatan").html('<option value="">Pilih Kecamatan</option>');   
+        $("#kelurahan").val("");
+        $("#kelurahan").html('<option value="">Pilih Kelurahan</option>'); 
     });
 
     $("#kabupaten").change(function (e) {
@@ -170,10 +175,10 @@
         } else {
             $("#kecamatan").val("");
             $("#kecamatan").html('<option value="">Pilih Kecamatan</option>');
-             
+
         }
         $("#kelurahan").val("");
-            $("#kelurahan").html('<option value="">Pilih Kelurahan</option>');
+        $("#kelurahan").html('<option value="">Pilih Kelurahan</option>');
     });
 
     $("#kecamatan").change(function (e) {

@@ -90,7 +90,7 @@ if (empty($_SESSION['user'])) {
                     echo '<script type="text/javascript">' . $file['script'] . '</script>' . "\n";
                 }
             } else {
-                echo '<script type="text/javascript" src="'.$file.'?'.'"></script>' . "\n";
+                echo '<script type="text/javascript" src="'.$file.'"></script>' . "\n";
             }
         }
     }

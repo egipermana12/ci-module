@@ -12,7 +12,7 @@ use App\Models\KecamatanModel;
 use App\Models\KelurahanModel;
 use \Hermawan\DataTables\DataTable;
 use App\Validation\PegawaiValidation;
-
+use Exception;
 
 class Pegawai extends BaseController
 {
@@ -228,15 +228,27 @@ class Pegawai extends BaseController
             $imgReq = $this->request->getFile('foto_pegawai');
             $postData['foto_pegawai'] = $imgReq;
 
+            $id = $this->request->getPost('id');
+            $nik = $this->request->getPost('nik');
+
             // Validasi data pegawai
-            $validationResult = $this->validatePegawaiData($formRequest, $postData, $imgReq);
+            $validationResult = $this->validatePegawaiData($formRequest, $id, $postData, $imgReq);
 
             if ($validationResult['success']) {
-                $saveMessage = $this->savePegawaiData($postData);
-                return $this->response->setJSON([
-                    'success' => true,
-                    'messages' => $saveMessage
-                ]);
+                if($this->request->getPost('id') === '')
+                {
+                    $saveMessage = $this->savePegawaiData($postData);
+                    return $this->response->setJSON([
+                        'success' => true,
+                        'messages' => $saveMessage
+                    ]);
+                }else{
+                    $updateMessage = $this->updatePegawaiData($postData, $id, $nik);
+                    return $this->response->setJSON([
+                        'success' => true,
+                        'messages' => $updateMessage
+                    ]);
+                }
             } else {
                 return $this->response->setJSON([
                     'success' => false,
@@ -248,10 +260,10 @@ class Pegawai extends BaseController
         }
     }
 
-    private function validatePegawaiData($formRequest, $postData, $imgReq)
+    private function validatePegawaiData($formRequest, $id ,$postData, $imgReq)
     {
-        $rules = $formRequest->getRules($postData);
-        $messages = $formRequest->getMessages($postData);
+        $rules = $formRequest->getRules($postData, $id);
+        $messages = $formRequest->getMessages($postData, $id);
         $imgRules = $formRequest->rulesImage($imgReq);
         $imgMsg = $formRequest->messagesImage($imgReq);
 
@@ -291,6 +303,63 @@ class Pegawai extends BaseController
         }
 
         return 'Something wrong';
+    }
+
+    private function updatePegawaiData($data = array(), $id, $nik){
+        try{
+            if (key_exists("foto_pegawai", $data)) {
+                $image = $data['foto_pegawai'];
+                $imageold = $data['foto_pegawai_old'];
+                if($image != '')
+                {
+                    $generateName = $image->getRandomName();
+                    $data['foto_pegawai'] = $generateName;
+                    $imagenya = WRITEPATH . '../public/images/pegawai/' . $imageold;
+                    if(!empty($imagenya) && file_exists($imagenya) && $imageold != '' && $imageold != NULL){
+                        unlink($imagenya);
+                    }
+                }else{
+                    $data['foto_pegawai'] = $data['foto_pegawai_old'];
+                }
+            }
+
+            if ($this->mPegawai->update(['id'=>$id, 'nik' => $nik],$data)) {
+                if (!empty($image) && !$image->hasMoved() && $image != '') {
+                    $image->move(WRITEPATH . '../public/images/pegawai', $generateName);
+                }
+                return 'Data berhasil diupdate';
+            }
+
+            return 'Something wrong';
+
+        }catch(Exception $e){
+            throw new Exception('Something wrong');
+        }
+    }
+
+    public function destroy()
+    {
+        if ($this->request->isAJAX()){
+            $ids = $this->request->getPost('id');
+            $id = explode(",", $ids);
+            $message = "";
+            for ($i = 0; $i < sizeof($id); $i++) {
+                $file = $this->mPegawai->find($id[$i]);
+                $gambar = $file['foto_pegawai'];
+                $imagenya = WRITEPATH . '../public/images/pegawai/' . $gambar;
+                if(!empty($imagenya) && file_exists($imagenya) && $gambar != '' && $gambar != NULL){
+                    unlink($imagenya);
+                }   
+                $this->mPegawai->delete($id[$i]);
+                $message = "Data berhasil dihapus";
+            }
+            return $this->response->setJSON([
+                    'err' => false,
+                    'messages' => $message
+            ]);
+        }else{
+            return redirect()->to('/');
+        }
     }
 
     //batas
