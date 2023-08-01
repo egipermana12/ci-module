@@ -5,16 +5,21 @@ use App\Models\UnitKerjaModel;
 
 class PegawaiValidation
 {
-    public function getRules($post): array
+    public function getRules($post, $id): array
     {
         $unitkerja = new UnitKerjaModel;
         $list = $unitkerja->mapUnitkerja();
+        if($id == ''){
+            $nik_unik = 'required|string|is_unique[t_data_pegawai.nik]';
+        }else{
+            $nik_unik = 'required|string';
+        }
         return [
             'nm_pegawai' => [
                 'rules' => 'required',
             ],
             'nik' => [
-                'rules' => 'required|string|is_unique[t_data_pegawai.nik]'
+                'rules' => $nik_unik
             ],
             'tgl_lahir' => [
                 'rules' => 'required|valid_date[Y-m-d]'
