@@ -15,6 +15,7 @@
         <div id="loadingSegment"></div> 
         <div id="dataPegawai"></div> 
     </div>
+    
 </div>
 <div class="tampilModal" style="display: none;"></div>
 <?=$this->endSection()?>

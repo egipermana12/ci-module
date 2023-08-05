@@ -29,6 +29,10 @@ class Pegawai extends BaseController
     {
         $this->data['site_title'] = 'Data Pegawai';
         $this->addJs(base_url() .'vendors/DataTables/datatables.min.js');
+        $this->addJs(base_url() .'vendors/DataTables/JSZip-2.5.0/jszip.min.js');
+        $this->addJs(base_url() .'vendors/DataTables/pdfmake-0.2.7/pdfmake.min.js');
+        $this->addJs(base_url() .'vendors/DataTables/Buttons-2.3.6/js/buttons.html5.min.js');
+        $this->addJs(base_url() .'vendors/DataTables/pdfmake-0.2.7/vfs_fonts.js');
         $this->addStyle(base_url() .'vendors/DataTables/datatables.min.css');
         $this->addStyle( base_url() .'assets/css/page/data-pegawai.css');
         $this->addJs(base_url() .'assets/js/page/data-pegawai.js');
@@ -55,8 +59,11 @@ class Pegawai extends BaseController
             ->join('t_divisi_kerja c', 'c.id_divisi_kerja = t_data_pegawai.id_divisi');
             return DataTable::of($data)
             ->filter(function($data, $request){
-                if ($request->id_label){
-                    $data->where('t_data_pegawai.id_unit_kerja', $request->id_label);
+                if ($request->id_uni_kerja){
+                    $data->where('t_data_pegawai.id_unit_kerja', $request->id_uni_kerja);
+                }
+                if ($request->id_divisi){
+                    $data->where('t_data_pegawai.id_divisi', $request->id_divisi);
                 }
             })
             ->add('aksi', function($row){
@@ -73,7 +80,11 @@ class Pegawai extends BaseController
     public function view()
     {
         if($this->request->isAJAX()){
-            return view('datapegawai/table');
+            $data = [
+                'unitKerja' => $this->mUnitKerja->getUnitkerja(),
+                'divisKerja' => $this->DivisiKerja(),
+            ];
+            return view('datapegawai/table', $data);
         }else{
             return redirect()->to('/');
         }
@@ -354,8 +365,8 @@ class Pegawai extends BaseController
                 $message = "Data berhasil dihapus";
             }
             return $this->response->setJSON([
-                    'err' => false,
-                    'messages' => $message
+                'err' => false,
+                'messages' => $message
             ]);
         }else{
             return redirect()->to('/');
