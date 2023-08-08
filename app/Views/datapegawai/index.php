@@ -6,9 +6,9 @@
             Data Pegawai
         </div>
         <div class="d-flex text-end gap-2">
-            <button id="btn-delete" class="btn btn-sm btn-danger"><i class="fas fa-solid fa-square-xmark"></i> Delete Record</button>
-            <button id="btn-edit" class="btn btn-sm btn-success"><i class="fas fa-solid fa-square-minus"></i> Edit Record</button>
-            <button id="btn-baru" class="btn btn-sm btn-primary"><i class="fas fa-solid fa-square-plus"></i> New Record</button>
+            <button id="btn-delete" class="btn btn-sm btn-danger"><i class="fas fa-solid fa-square-xmark"></i> Delete</button>
+            <button id="btn-edit" class="btn btn-sm btn-success"><i class="fas fa-solid fa-square-minus"></i> Edit</button>
+            <button id="btn-baru" class="btn btn-sm btn-primary"><i class="fas fa-solid fa-square-plus"></i> New</button>
         </div> 
     </div>
     <div class="card-body">

@@ -195,7 +195,17 @@ function tampilData() {
                             );
                         },
                     },
-                    {},
+                    {
+                        extend: "excelHtml5",
+                        text: "<i class='far fa-file-xlsx'></i> Excel",
+                        className: "btn btn-success btn-sm",
+                        filename: "Survey Report",
+                        title: "",
+                        footer: true,
+                        customize: function (xlsx) {
+                            customXLSX(xlsx);
+                        },
+                    },
                 ],
             },
         ],
@@ -403,4 +413,102 @@ function pdfCustom(doc) {
             margin: 20,
         };
     };
+}
+
+function customXLSX(xlsx) {
+    var sheet = xlsx.xl.worksheets["sheet1.xml"];
+    var downrows = 6; //number of rows for heading
+    var clRow = $("row", sheet);
+
+    $('row c[r^="A"]', sheet).attr("s", "51");
+    $('row c[r^="B"]', sheet).attr("s", "50");
+    $('row c[r^="C"]', sheet).attr("s", "51");
+    $('row c[r^="D"]', sheet).attr("s", "51");
+    $('row c[r^="E"]', sheet).attr("s", "51");
+    $('row c[r^="F"]', sheet).attr("s", "51");
+    $('row c[r^="G"]', sheet).attr("s", "51");
+    $('row c[r^="H"]', sheet).attr("s", "51");
+
+    $("row:first c", sheet).attr("s", "2");
+    $("row:last c", sheet).attr("s", "2");
+
+    //update Row
+    clRow.each(function () {
+        var attr = $(this).attr("r");
+        var ind = parseInt(attr);
+        ind = ind + downrows;
+        $(this).attr("r", ind);
+    });
+
+    // Update  row > c
+    $("row c ", sheet).each(function () {
+        var attr = $(this).attr("r");
+        var pre = attr.substring(0, 1);
+        var ind = parseInt(attr.substring(1, attr.length));
+        ind = ind + downrows;
+        $(this).attr("r", pre + ind);
+    });
+
+    function Addrow(index, data) {
+        var row = sheet.createElement("row");
+        row.setAttribute("r", index);
+        for (i = 0; i < data.length; i++) {
+            var key = data[i].key;
+            var value = data[i].value;
+
+            var c = sheet.createElement("c");
+            c.setAttribute("t", "inlineStr");
+            c.setAttribute("r", key + index);
+
+            var is = sheet.createElement("is");
+            var t = sheet.createElement("t");
+            var text = sheet.createTextNode(value);
+
+            t.appendChild(text);
+            is.appendChild(t);
+            c.appendChild(is);
+
+            row.appendChild(c);
+        }
+
+        return row;
+    }
+
+    var r1 = Addrow(1, [
+        {
+            key: "A",
+            value: "Company Name: " + "cmp_name",
+        },
+    ]);
+    var r2 = Addrow(2, [
+        {
+            key: "A",
+            value: "Survey Name: " + "survey_name",
+        },
+    ]);
+    var r3 = Addrow(3, [
+        {
+            key: "A",
+            value: "Month and Year  : " + "date",
+        },
+    ]);
+    var r4 = Addrow(4, [
+        {
+            key: "A",
+            value: "vendor_category",
+        },
+    ]);
+    var r5 = Addrow(5, [
+        {
+            key: "A",
+            value: "no_of_res_ven",
+        },
+    ]);
+
+    var sheetData = sheet.getElementsByTagName("sheetData")[0];
+    sheetData.insertBefore(r5, sheetData.childNodes[0]);
+    sheetData.insertBefore(r4, sheetData.childNodes[0]);
+    sheetData.insertBefore(r3, sheetData.childNodes[0]);
+    sheetData.insertBefore(r2, sheetData.childNodes[0]);
+    sheetData.insertBefore(r1, sheetData.childNodes[0]);
 }
