@@ -13,6 +13,7 @@ use App\Models\KelurahanModel;
 use \Hermawan\DataTables\DataTable;
 use App\Validation\PegawaiValidation;
 use Exception;
+use App\Libraries\ImportPegawai;
 
 class Pegawai extends BaseController
 {
@@ -367,6 +368,37 @@ class Pegawai extends BaseController
             return $this->response->setJSON([
                 'err' => false,
                 'messages' => $message
+            ]);
+        }else{
+            return redirect()->to('/');
+        }
+    }
+
+    public function FormImport()
+    {
+        if($this->request->isAJAX()){
+            $data = [
+                'judul' => 'Import Data Pegawai'
+            ];
+            return $this->response->setJSON([
+                'err' => false,
+                'data' => view('datapegawai/formImport', $data)
+            ]);
+        }else{
+            return redirect()->to('/');
+        }
+    }
+
+    public function importAction()
+    {
+        if($this->request->isAJAX()){
+            $file = $this->request->getFile('file_excel_pegawai');
+            $filename = date('YmdHis');
+            $import = new ImportPegawai();
+            $impExec = $import->importExcel($file,$filename);
+            return $this->response->setJSON([
+                'err' => false,
+                'messages' => $impExec
             ]);
         }else{
             return redirect()->to('/');

@@ -316,6 +316,27 @@ $(document).ready(function () {
             });
         }
     });
+
+    $("#btn-import").click(function (e) {
+        e.preventDefault();
+        Load_Loading();
+        $.ajax({
+            type: "POST",
+            url: "Pegawai/FormImport",
+            data: { [csrfName]: csrfHash },
+            success: function (res) {
+                Clear_Loading();
+                $(".tampilModal").html(res.data);
+                $("#staticBackdrop").modal("show");
+                $("#staticBackdrop").appendTo("body");
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert(
+                    xhr.status + "\n" + xhr.responseText + "\n" + thrownError,
+                );
+            },
+        });
+    });
 });
 
 function pdfCustom(doc) {
